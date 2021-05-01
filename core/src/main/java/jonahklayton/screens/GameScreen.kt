@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.*
 import jonahklayton.PlantGame
+import jonahklayton.systems.ui.Hud
 import jonahklayton.systems.ui.TextRenderer
 import jonahklayton.systems.world.Level
 import jonahklayton.systems.world.World
@@ -51,10 +52,13 @@ class GameScreen : KtxScreen {
 //        TextRenderer.end()
         world.draw(PlantGame.shapeDrawer)
         PlantGame.batch.end()
+
+        Hud.draw()
     }
 
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height)
+        Hud.resize(width, height)
     }
 
     fun mouseToWorldVec() : Vector2 {
