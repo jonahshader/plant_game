@@ -1,4 +1,4 @@
-package jonahklayton;
+package jonahklayton.screens;
 
 import com.badlogic.gdx.Screen;
 
