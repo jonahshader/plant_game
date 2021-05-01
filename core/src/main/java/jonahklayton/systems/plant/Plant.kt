@@ -2,6 +2,7 @@ package jonahklayton.systems.plant
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
+import space.earlygrey.shapedrawer.ShapeDrawer
 
 
 // growth/existence cost is taken care of here not in the nodes themselves
@@ -121,7 +122,7 @@ class Plant(position: Vector2){
         manageLists()
     }
 
-    fun draw(renderer: ShapeRenderer){
+    fun draw(renderer: ShapeDrawer){
         for(i in nodes){
             i.draw(renderer)
         }

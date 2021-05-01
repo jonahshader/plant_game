@@ -1,8 +1,9 @@
 package jonahklayton.systems.world.terrain
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import jonahklayton.systems.world.World
 
-class Terrain {
+class Terrain(private val world: World) {
     companion object {
         const val LOAD_CHUNK_RADIUS = 2
         const val UNLOAD_CHUNK_RADIUS = 2
@@ -22,6 +23,8 @@ class Terrain {
     fun update(dt: Float) {
         // iterate through all nodes. keep chunks with nodes loaded
         keyToChunk.values.forEach { it.queueRemoved = true }
+        world.getAllNodes().forEach {
 
+        }
     }
 }

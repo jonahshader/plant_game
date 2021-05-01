@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.FillViewport
 import com.badlogic.gdx.utils.viewport.FitViewport
 import jonahklayton.PlantGame
+import jonahklayton.systems.screen.ScreenManager
 import jonahklayton.systems.ui.TextRenderer
 import jonahklayton.systems.ui.menu.Menu
 import ktx.app.KtxScreen
@@ -21,7 +22,7 @@ class MenuScreen : KtxScreen {
     override fun show() {
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
 
-        menu.addMenuItem("Singleplayer") {}
+        menu.addMenuItem("Singleplayer") {ScreenManager.push(GameScreen())}
         menu.addMenuItem("Settings") {}
         menu.addMenuItem("Exit") {Gdx.app.exit()}
     }
