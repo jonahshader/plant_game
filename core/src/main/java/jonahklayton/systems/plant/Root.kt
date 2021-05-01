@@ -2,6 +2,7 @@ package jonahklayton.systems.plant
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
+import space.earlygrey.shapedrawer.ShapeDrawer
 
 class Root(relativeTargetPosition: Vector2, parent: Node?, plant: Plant, storedEnergy: Float): Node(relativeTargetPosition, parent, plant) {
     private val storagePerThicknessSq = 100F
@@ -18,11 +19,8 @@ class Root(relativeTargetPosition: Vector2, parent: Node?, plant: Plant, storedE
         return 0F
     }
 
-    fun Node.run(timePassed: Float){
+    override fun update(timePassed: Float){
         waterAbsorbed -= getMaxWaterAvailable()*timePassed
-    }
-
-    fun Node.draw(renderer: ShapeRenderer){
     }
 
     fun thicken(){

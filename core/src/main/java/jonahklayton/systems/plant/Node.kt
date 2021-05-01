@@ -1,8 +1,7 @@
 package jonahklayton.systems.plant
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
-import java.lang.invoke.MethodHandles.zero
+import space.earlygrey.shapedrawer.ShapeDrawer
 
 open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
     var relativePosition = Vector2(0.1F, 0.1F) //Not zero so the node doesn't immediately die.
@@ -26,12 +25,14 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
 
     var plant = plant
 
-    open fun updated(timePassed: Float){
+    open fun update(timePassed: Float){
 
     }
 
-    open fun draw(renderer: ShapeRenderer){
-        renderer.line(worldPosition, parent?.worldPosition ?: plant.worldPosition)
+    fun draw(renderer: ShapeDrawer){
+        if (parent != null) {
+            renderer.line(worldPosition, parent!!.worldPosition)
+        }
     }
 
     fun addChild(child: Node){
