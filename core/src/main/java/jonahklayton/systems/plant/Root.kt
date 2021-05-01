@@ -7,8 +7,8 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 class Root(relativeTargetPosition: Vector2, parent: Node?, plant: Plant, storedEnergy: Float): Node(relativeTargetPosition, parent, plant) {
     private val storagePerThicknessSq = 100F
     private val waterAvailabilityPerThickness = 10F
+    private val THICKNESS_COST = 10F
 
-    var thickness = 1
     var storedEnergy = storedEnergy
         private set
 
@@ -19,12 +19,17 @@ class Root(relativeTargetPosition: Vector2, parent: Node?, plant: Plant, storedE
         return 0F
     }
 
+    override fun draw(renderer: ShapeDrawer){
+        renderer.setColor(0.5f, 0.4f, 0f, 1f)
+        super.draw(renderer)
+    }
+
     override fun update(timePassed: Float){
         waterAbsorbed -= getMaxWaterAvailable()*timePassed
     }
 
     fun thicken(){
-        thickness++
+        if(plant.requestEnergy(THICKNESS_COST) >= THICKNESS_COST) thickness++
     }
 
     fun getMaxStoredEnergy(): Float{
