@@ -1,6 +1,7 @@
 package jonahklayton.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -27,6 +28,7 @@ class GameScreen : KtxScreen {
 
     private lateinit var worldCamera: Camera
     private lateinit var viewport: ScalingViewport
+    private lateinit var inputMultiplexer: InputMultiplexer
     private lateinit var world: World
 
     override fun show() {
@@ -35,7 +37,9 @@ class GameScreen : KtxScreen {
         val gen = TerrainGenerator(69)
         gen.octaveSet.addTwisterOctaveFractal(.05, 1.0, .5, .5, 3)
         gen.octaveSet.addOctaveFractal(.01, 1.0, .5, .5, 2)
-        world = World(Level(Vector2(), Vector2(50f, 0f), gen))
+        inputMultiplexer = InputMultiplexer()
+        Gdx.input.inputProcessor = inputMultiplexer
+        world = World(Level(Vector2(), Vector2(50f, 0f), gen), inputMultiplexer, worldCamera)
     }
 
     override fun render(delta: Float) {
