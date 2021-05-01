@@ -21,7 +21,7 @@ class Ray(private val pos: Vector2, angle: Vector2, var energy: Float) {
     }
 
     fun draw(shapeDrawer: ShapeDrawer) {
-        shapeDrawer.setColor(Color.YELLOW)
+        shapeDrawer.setColor(1f, 1f, 0f, .75f * energy)
         shapeDrawer.line(pos, endPos)
     }
 }
