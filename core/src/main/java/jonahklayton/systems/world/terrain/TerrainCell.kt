@@ -32,7 +32,7 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
     private val porousness: Float = when (type) {
         TerrainType.DIRT -> .5f
         TerrainType.GRASS -> 1f
-        TerrainType.STONE -> .05f
+        TerrainType.STONE -> .033f
     }
 
     private val tint: Color = when (type) {
@@ -44,13 +44,19 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
     private val maxWater: Float = when (type) {
         TerrainType.DIRT -> 1.0f
         TerrainType.GRASS -> 1.5f
-        TerrainType.STONE -> 0.1f
+        TerrainType.STONE -> 0.25f
     }
 
     private val waterGenPerSecond: Float = when (type) {
         TerrainType.DIRT -> 0.01f
         TerrainType.GRASS -> 0f
         TerrainType.STONE -> 0f
+    }
+
+    private val mixTimerInterval: Float = when (type) {
+        TerrainType.DIRT -> 0.8f
+        TerrainType.GRASS -> 0.2f
+        TerrainType.STONE -> 1f
     }
 
     private var water = 0f
@@ -102,7 +108,7 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
     }
 
     fun draw() {
-        val waterTintness = water / maxWater
+        val waterTintness = water / maxWater.coerceAtLeast(1f)
 //        sprite.color.set(tint.r, tint.g, tint.b, tint.a)
 //        sprite.color.lerp(waterTint, waterTintness)
 //        sprite.draw(batch)
@@ -128,8 +134,8 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
         water += requestedAmount
     }
 
-    fun resetTimer() {
-        mixTimer += rand.nextFloat()
+    private fun resetTimer() {
+        mixTimer += rand.nextFloat() * mixTimerInterval
     }
 
 }
