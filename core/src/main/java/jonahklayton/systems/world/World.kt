@@ -6,8 +6,8 @@ import jonahklayton.systems.plant.Plant
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 class World(level: Level) {
-    private val playerPlant = Plant(level.playerPos)
-    private val enemyPlant = Plant(level.enemyPos)
+    private val playerPlant = Plant(level.playerPos, 100F, this)
+    private val enemyPlant = Plant(level.enemyPos, 100F, this)
 
 
     // TODO: isUnderground(x, y) method
