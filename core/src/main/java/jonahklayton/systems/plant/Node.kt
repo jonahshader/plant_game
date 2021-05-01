@@ -12,7 +12,7 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
 
     var targetLength = relativeTargetPosition.len()
 
-    var worldPosition: Vector2 = relativePosition.add(parent?.worldPosition ?: Vector2.Zero)
+    var worldPosition: Vector2 = relativePosition.add(parent?.worldPosition ?: plant.worldPosition)
         private set
 
     var isDead = false
@@ -31,7 +31,7 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
     }
 
     open fun draw(renderer: ShapeRenderer){
-        renderer.line(worldPosition, parent?.worldPosition)
+        renderer.line(worldPosition, parent?.worldPosition ?: plant.worldPosition)
     }
 
     fun addChild(child: Node){
@@ -50,8 +50,8 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
         for(i in children) i.die()
     }
 
-    private fun updateWorldPosition(){
-        worldPosition = relativePosition.add(parent?.worldPosition ?: Vector2.Zero)
+    fun updateWorldPosition(){
+        worldPosition = relativePosition.add(parent?.worldPosition ?: plant.worldPosition)
 
         for(i in children){
             i.updateWorldPosition();
@@ -64,8 +64,6 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
         relativePosition = relativePosition.add(relativeTargetPosition.scl(percent/100))
 
         if (relativePosition.dot(oldPos) < 0) die()
-
-        updateWorldPosition()
     }
 
     fun isFullyGrown(): Boolean {
