@@ -35,8 +35,8 @@ class GameScreen : KtxScreen {
         worldCamera = OrthographicCamera()
         viewport = FillViewport(GAME_WIDTH, GAME_HEIGHT, worldCamera)
         val gen = TerrainGenerator(69)
-        gen.octaveSet.addTwisterOctaveFractal(.05, 1.0, .5, .5, 3)
-        gen.octaveSet.addOctaveFractal(.01, 1.0, .5, .5, 2)
+        gen.octaveSet.addTwisterOctaveFractal(.01, 1.0, .5, .5, 5)
+        gen.octaveSet.addOctaveFractal(.005, 1.0, .5, .5, 4)
         inputMultiplexer = InputMultiplexer()
         Gdx.input.inputProcessor = inputMultiplexer
         world = World(Level(Vector2(), Vector2(50f, 0f), gen), inputMultiplexer, worldCamera)

@@ -5,12 +5,12 @@ import com.badlogic.gdx.graphics.Color.*
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.RandomXS128
+import jonahklayton.PlantGame
 import jonahklayton.systems.assets.Assets
 
 class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainType, private val rand: RandomXS128, private val terrain: Terrain) {
     companion object {
-        const val SIZE = 16f
-        const val MIX_CHANCE = .25f
+        const val SIZE = 4f
     }
 
     enum class TerrainType {
@@ -20,12 +20,14 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
     }
 
     private val waterTint = Color(.3f, .4f, 1f, 1f)
+    private val currentColor = Color(1f, 1f, 1f, 1f)
 
-    private var sprite: Sprite = when (type) {
-        TerrainType.DIRT -> Sprite(Assets.getSprites().findRegion("white_pixel"))
-        TerrainType.GRASS -> Sprite(Assets.getSprites().findRegion("white_pixel"))
-        TerrainType.STONE -> Sprite(Assets.getSprites().findRegion("white_pixel"))
-    }
+
+//    private var sprite: Sprite = when (type) {
+//        TerrainType.DIRT -> Sprite(Assets.getSprites().findRegion("white_pixel"))
+//        TerrainType.GRASS -> Sprite(Assets.getSprites().findRegion("white_pixel"))
+//        TerrainType.STONE -> Sprite(Assets.getSprites().findRegion("white_pixel"))
+//    }
 
     private val porousness: Float = when (type) {
         TerrainType.DIRT -> .5f
@@ -46,22 +48,24 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
     }
 
     private val waterGenPerSecond: Float = when (type) {
-        TerrainType.DIRT -> 0.005f
+        TerrainType.DIRT -> 0.01f
         TerrainType.GRASS -> 0f
         TerrainType.STONE -> 0f
     }
 
     private var water = 0f
+    private var mixTimer = 0f
 
     init {
-        sprite.setSize(SIZE, SIZE)
-        sprite.setPosition(SIZE * xCell, SIZE * yCell)
+//        sprite.setSize(SIZE, SIZE)
+//        sprite.setPosition(SIZE * xCell, SIZE * yCell)
+        resetTimer()
     }
 
     private fun mix(otherCell: TerrainCell) {
         val avgPorusness = (porousness + otherCell.porousness)/2f
-        val thisNextWater = ((1-avgPorusness) * .5f) * water + (avgPorusness * .5f) * otherCell.water
-        val otherNextWater = ((1-avgPorusness) * .5f) * otherCell.water + (avgPorusness * .5f) * water
+        val thisNextWater = (1-(avgPorusness * .5f)) * water + (avgPorusness * .5f) * otherCell.water
+        val otherNextWater = (1-(avgPorusness * .5f)) * otherCell.water + (avgPorusness * .5f) * water
 
         water = thisNextWater
         otherCell.water = otherNextWater
@@ -78,7 +82,7 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
 
     fun update(dt: Float) {
         // try mix
-        if (rand.nextFloat() < MIX_CHANCE) {
+        if (mixTimer <= 0) {
             var xMix = xCell
             var yMix = yCell
             when (rand.nextInt(4)) {
@@ -89,19 +93,23 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
             }
             val otherCell = terrain.getCell(xMix, yMix)
             if (otherCell != null) mix(otherCell)
+            resetTimer()
         }
+        mixTimer -= dt
 
         water += dt * waterGenPerSecond
         water = water.coerceIn(0f, maxWater)
     }
 
-    fun draw(batch: SpriteBatch) {
+    fun draw() {
         val waterTintness = water / maxWater
-        sprite.color.set(tint.r, tint.g, tint.b, tint.a)
+//        sprite.color.set(tint.r, tint.g, tint.b, tint.a)
 //        sprite.color.lerp(waterTint, waterTintness)
-        sprite.draw(batch)
-//        batch.draw(textureRegion, xCell * SIZE, yCell * SIZE, SIZE, SIZE)
-        println("drawin at $xCell $yCell")
+//        sprite.draw(batch)
+        currentColor.set(tint.r, tint.g, tint.b, tint.a)
+        currentColor.lerp(waterTint, waterTintness)
+        PlantGame.shapeDrawer.setColor(currentColor)
+        PlantGame.shapeDrawer.filledRectangle(xCell * SIZE, yCell * SIZE, SIZE, SIZE)
     }
 
     fun takeWater(requestedAmount: Float) : Float {
@@ -118,6 +126,10 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
     fun putWater(requestedAmount: Float) {
         // TODO: make this less dumb
         water += requestedAmount
+    }
+
+    fun resetTimer() {
+        mixTimer += rand.nextFloat()
     }
 
 }
