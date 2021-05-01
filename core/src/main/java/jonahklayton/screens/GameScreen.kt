@@ -37,6 +37,7 @@ class GameScreen : KtxScreen {
         inputMultiplexer = InputMultiplexer()
         Gdx.input.inputProcessor = inputMultiplexer
         world = World(Level(Vector2(), Vector2(50f, 0f), gen), inputMultiplexer, worldCamera)
+        viewport.update(Gdx.graphics.width, Gdx.graphics.height)
     }
 
     override fun render(delta: Float) {

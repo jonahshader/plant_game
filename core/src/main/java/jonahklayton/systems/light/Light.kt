@@ -74,12 +74,13 @@ class Light(private val world: World) {
                 perpendicularOffset.set(lightPerpendicular)
                 perpendicularOffset.scl(spawnLineLength * (rand.nextFloat() - .5f))
                 val rayPos = Vector2(lightSpawnPosLineCenter).add(perpendicularOffset)
-                rays += Ray(rayPos, Vector2(worldToSunAngle).scl(-1f), sin(dayLightRadians()))
+                rays += Ray(rayPos, Vector2(worldToSunAngle).scl(-1f), sin(dayLightRadians()), spawnLineLength * 2f, world)
             }
         }
 
         // run rays
         rays.forEach {it.update()}
+        rays.removeIf{it.queueRemoval}
     }
 
     fun draw(shapeDrawer: ShapeDrawer) {

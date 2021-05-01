@@ -55,5 +55,7 @@ class Terrain(private val world: World, private val generator: TerrainGenerator)
         keyToChunk.values.removeIf{it.queueRemoved}
     }
 
-    fun isUnderground(worldPos: Vector2) : Boolean = getCellFromWorldPos(worldPos) != null
+    fun isInLoadedChunk(worldPos: Vector2) : Boolean = keyToChunk.containsKey(TerrainChunk.worldPosToKey(worldPos))
+
+    fun isUnderground(worldPos: Vector2) : Boolean = isInLoadedChunk(worldPos) && getCellFromWorldPos(worldPos) != null
 }
