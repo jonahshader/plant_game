@@ -3,14 +3,12 @@ package jonahklayton.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Camera
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.*
 import jonahklayton.PlantGame
-import jonahklayton.systems.ui.TextRenderer
 import jonahklayton.systems.world.Level
 import jonahklayton.systems.world.World
 import jonahklayton.systems.world.terrain.TerrainGenerator
@@ -30,8 +28,8 @@ class GameScreen : KtxScreen {
 
     override fun show() {
         worldCamera = OrthographicCamera()
-        viewport = ExtendViewport(GAME_WIDTH, GAME_HEIGHT, worldCamera)
-        val gen = TerrainGenerator(69)
+        viewport = FillViewport(GAME_WIDTH, GAME_HEIGHT, worldCamera)
+        val gen = TerrainGenerator(151253)
         gen.octaveSet.addTwisterOctaveFractal(.01, 1.0, .5, .5, 5)
         gen.octaveSet.addOctaveFractal(.005, 1.0, .5, .5, 4)
         inputMultiplexer = InputMultiplexer()
@@ -45,6 +43,7 @@ class GameScreen : KtxScreen {
         world.update(delta)
 
         ScreenUtils.clear(.2f, .5f, 1f, 1f)
+        viewport.apply()
         PlantGame.batch.begin(worldCamera)
 //        TextRenderer.begin(PlantGame.batch, viewport, TextRenderer.Font.NORMAL, 32f, 0f)
 //        TextRenderer.color = Color.BLACK

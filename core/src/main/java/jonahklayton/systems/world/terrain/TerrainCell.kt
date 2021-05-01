@@ -36,8 +36,8 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
     }
 
     private val tint: Color = when (type) {
-        TerrainType.DIRT -> BROWN
-        TerrainType.GRASS -> GREEN
+        TerrainType.DIRT -> Color(.7f, .4f, .2f, 1f)
+        TerrainType.GRASS -> Color(.5f, .9f, .2f, 1f)
         TerrainType.STONE -> GRAY
     }
 

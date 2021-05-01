@@ -27,12 +27,6 @@ class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var trave
             return
         }
 
-        // try colliding with ground
-        if (world.terrain.isUnderground(tipPos)) {
-            queueRemoval = true
-            return
-        }
-
         // try colliding with leaves
         world.getAllLeaves().forEach {
             if (it.parent != null) {
@@ -41,6 +35,12 @@ class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var trave
                     energy *= (1 - efficiency)
                 }
             }
+        }
+
+        // try colliding with ground
+        if (world.terrain.isUnderground(tipPos)) {
+            queueRemoval = true
+            return
         }
     }
 

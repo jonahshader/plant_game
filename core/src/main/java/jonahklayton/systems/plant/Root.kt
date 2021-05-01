@@ -1,6 +1,5 @@
 package jonahklayton.systems.plant
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import space.earlygrey.shapedrawer.ShapeDrawer
 
@@ -8,11 +7,12 @@ class Root(relativeTargetPosition: Vector2, parent: Node?, plant: Plant, storedE
     private val storagePerThicknessSq = 100F
     private val waterAvailabilityPerThickness = 10F
     private val THICKNESS_COST = 10F
+    private val energyPerLengthScalar = 1/50f
 
     var storedEnergy = storedEnergy
         private set
 
-    var waterAbsorbed = 0F
+    var waterLeftInTick = 0F
 
     fun getWater(quantity: Float): Float{
         //TODO: tell terrain water taken (limited by thickness) and return the amount we got (don't forget to add to water absorbed)
@@ -25,7 +25,7 @@ class Root(relativeTargetPosition: Vector2, parent: Node?, plant: Plant, storedE
     }
 
     override fun update(timePassed: Float){
-        waterAbsorbed -= getMaxWaterAvailable()*timePassed
+        waterLeftInTick = getAbsorptionRate()*timePassed
     }
 
     fun thicken(){
@@ -33,10 +33,10 @@ class Root(relativeTargetPosition: Vector2, parent: Node?, plant: Plant, storedE
     }
 
     fun getMaxStoredEnergy(): Float{
-        return thickness*thickness*storagePerThicknessSq
+        return thickness*thickness*storagePerThicknessSq*getLength()*energyPerLengthScalar
     }
 
-    fun getMaxWaterAvailable(): Float{
+    fun getAbsorptionRate(): Float{
         return thickness*waterAvailabilityPerThickness
     }
 
