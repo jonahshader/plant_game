@@ -47,7 +47,7 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
     }
 
     //call to get energy from somewhere in the plant, returns the amount of energy gotten
-    private fun requestEnergy(energyRequested: Float): Float{
+    fun requestEnergy(energyRequested: Float): Float{
         var energyNeeded = energyRequested-energy
         if(energyNeeded <= 0){
             energy -= energyRequested
@@ -125,10 +125,14 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
         //discard leftover energy
         energy = 0F
 
+        for(i in nodes){
+            i.update(timePassed);
+        }
+
         manageLists()
     }
 
-    fun draw(renderer: ShapeDrawer){
+    open fun draw(renderer: ShapeDrawer){
         for(i in nodes){
             i.draw(renderer)
         }

@@ -14,7 +14,7 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 class World(level: Level, inputMultiplexer: InputMultiplexer, camera: Camera) {
     private val playerPlant = PlayerPlant(level.playerPos, 100F, this, camera)
     private val enemyPlant = Plant(level.enemyPos, 100F, this)
-    private val terrain = Terrain(this, level.generator)
+    val terrain = Terrain(this, level.generator)
 
     init {
         // register player plant as an input processor

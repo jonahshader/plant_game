@@ -25,7 +25,7 @@ class TerrainChunk(val xChunk: Int, val yChunk: Int, private val generator: Terr
     fun getCell(xCell: Int, yCell: Int) : TerrainCell? = cells[cellPosToIndex(xCell, yCell)]
 
     fun draw(batch: SpriteBatch) {
-        cells.forEach { it?.draw(batch) }
+        cells.forEach { it?.draw() }
     }
 
     fun update(dt: Float) {

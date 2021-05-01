@@ -26,14 +26,15 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
 
     var plant = plant
 
+    var thickness = 3F
+
     open fun update(timePassed: Float){
 
     }
 
-    fun draw(renderer: ShapeDrawer){
+    open fun draw(renderer: ShapeDrawer){
         if (parent != null) {
-            renderer.setColor(Color.BLACK)
-            renderer.line(worldPosition, parent!!.worldPosition, 3F)
+            renderer.line(worldPosition, parent!!.worldPosition, thickness)
         }
     }
 

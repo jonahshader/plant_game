@@ -8,10 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.ScreenUtils
-import com.badlogic.gdx.utils.viewport.ExtendViewport
-import com.badlogic.gdx.utils.viewport.FillViewport
-import com.badlogic.gdx.utils.viewport.ScalingViewport
-import com.badlogic.gdx.utils.viewport.Viewport
+import com.badlogic.gdx.utils.viewport.*
 import jonahklayton.PlantGame
 import jonahklayton.systems.ui.TextRenderer
 import jonahklayton.systems.world.Level
@@ -27,16 +24,16 @@ class GameScreen : KtxScreen {
     }
 
     private lateinit var worldCamera: Camera
-    private lateinit var viewport: ScalingViewport
+    private lateinit var viewport: Viewport
     private lateinit var inputMultiplexer: InputMultiplexer
     private lateinit var world: World
 
     override fun show() {
         worldCamera = OrthographicCamera()
-        viewport = FillViewport(GAME_WIDTH, GAME_HEIGHT, worldCamera)
+        viewport = ExtendViewport(GAME_WIDTH, GAME_HEIGHT, worldCamera)
         val gen = TerrainGenerator(69)
-        gen.octaveSet.addTwisterOctaveFractal(.05, 1.0, .5, .5, 3)
-        gen.octaveSet.addOctaveFractal(.01, 1.0, .5, .5, 2)
+        gen.octaveSet.addTwisterOctaveFractal(.01, 1.0, .5, .5, 5)
+        gen.octaveSet.addOctaveFractal(.005, 1.0, .5, .5, 4)
         inputMultiplexer = InputMultiplexer()
         Gdx.input.inputProcessor = inputMultiplexer
         world = World(Level(Vector2(), Vector2(50f, 0f), gen), inputMultiplexer, worldCamera)
@@ -48,10 +45,10 @@ class GameScreen : KtxScreen {
 
         ScreenUtils.clear(.2f, .5f, 1f, 1f)
         PlantGame.batch.begin(worldCamera)
-        TextRenderer.begin(PlantGame.batch, viewport, TextRenderer.Font.NORMAL, 32f, 0f)
-        TextRenderer.color = Color.BLACK
+//        TextRenderer.begin(PlantGame.batch, viewport, TextRenderer.Font.NORMAL, 32f, 0f)
+//        TextRenderer.color = Color.BLACK
 //        TextRenderer.drawTextCentered(0f, 0f, "HELooolOOOLHfiodh")
-        TextRenderer.end()
+//        TextRenderer.end()
         world.draw(PlantGame.shapeDrawer)
         PlantGame.batch.end()
     }
