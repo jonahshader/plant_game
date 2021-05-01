@@ -2,21 +2,27 @@ package jonahklayton.systems.plant
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
+import jonahklayton.systems.world.World
 
 
 // growth/existence cost is taken care of here not in the nodes themselves
-class Plant(position: Vector2){
-    private val STARTING_ENERGY = 100.0F
+class Plant(position: Vector2, startingEnergy: Float, world: World){
     private val ENERGY_PER_LENGTH_SUSTAINED = 0.1F
     private val ENERGY_PER_LENGTH_GROWN = 1F
     private val ENERGY_PER_LENGTH_KILLED = 0.9F
     private val STORE_RATIO = 0.5F
 
     var worldPosition = position
+        private set
 
-    var root = Root(Vector2.Zero, null, this, STARTING_ENERGY)
+    var world = world
+        private set
+
+    var root = Root(Vector2.Zero, null, this, startingEnergy)
+        private set
 
     var energy = 0F
+        private set
 
     var nodes = mutableListOf<Node>()
         private set
