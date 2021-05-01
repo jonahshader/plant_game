@@ -101,7 +101,7 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
 //        sprite.color.lerp(waterTint, waterTintness)
         sprite.draw(batch)
 //        batch.draw(textureRegion, xCell * SIZE, yCell * SIZE, SIZE, SIZE)
-        println("drawin at $xCell $yCell")
+//        println("drawin at $xCell $yCell")
     }
 
     fun takeWater(requestedAmount: Float) : Float {
