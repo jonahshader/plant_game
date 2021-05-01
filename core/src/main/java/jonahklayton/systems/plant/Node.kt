@@ -1,23 +1,17 @@
 package jonahklayton.systems.plant
 
 import com.badlogic.gdx.math.Vector2
+import java.lang.invoke.MethodHandles.zero
 
-enum class NodeType {
-    Leaf,
-    Stem,
-    Root
-}
-
-class Node(relativeTargetPosition: Vector2, type: NodeType, parent: Node){
+open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
     var relativePosition = Vector2(0.1F, 0.1F) //Not zero so the node doesn't immediately die.
         private set
 
     private var relativeTargetPosition = relativeTargetPosition
 
-    var worldPosition: Vector2 = relativePosition.add(parent.worldPosition)
-        private set
+    var targetLength = relativeTargetPosition.len()
 
-    var type = type
+    var worldPosition: Vector2 = relativePosition.add(parent?.worldPosition ?: Vector2.Zero)
         private set
 
     var isDead = false
@@ -28,6 +22,8 @@ class Node(relativeTargetPosition: Vector2, type: NodeType, parent: Node){
 
     var children = ArrayList<Node>()
         private set
+
+    var plant = plant
 
     fun addChild(child: Node){
         children.add(child)
@@ -65,6 +61,10 @@ class Node(relativeTargetPosition: Vector2, type: NodeType, parent: Node){
 
     fun isFullyGrown(): Boolean {
         return relativePosition.len() >= relativeTargetPosition.len()
+    }
+
+    fun getLength(): Float {
+        return relativePosition.len()
     }
 
 }
