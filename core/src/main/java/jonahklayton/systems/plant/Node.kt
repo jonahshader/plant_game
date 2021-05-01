@@ -1,17 +1,18 @@
 package jonahklayton.systems.plant
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
-    var relativePosition = Vector2(0.1F, 0.1F) //Not zero so the node doesn't immediately die.
+    var relativePosition = Vector2(relativeTargetPosition).nor().scl(0.0001F) //Not zero so the node doesn't immediately die.
         private set
 
-    private var relativeTargetPosition = relativeTargetPosition
+    private var relativeTargetPosition = relativeTargetPosition.cpy()
 
     var targetLength = relativeTargetPosition.len()
 
-    var worldPosition: Vector2 = relativePosition.add(parent?.worldPosition ?: plant.worldPosition)
+    var worldPosition: Vector2 = Vector2(relativePosition).add(parent?.worldPosition ?: plant.worldPosition)
         private set
 
     var isDead = false
@@ -31,7 +32,8 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
 
     fun draw(renderer: ShapeDrawer){
         if (parent != null) {
-            renderer.line(worldPosition, parent!!.worldPosition)
+            renderer.setColor(Color.BLACK)
+            renderer.line(worldPosition, parent!!.worldPosition, 3F)
         }
     }
 
@@ -52,7 +54,7 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
     }
 
     fun updateWorldPosition(){
-        worldPosition = relativePosition.add(parent?.worldPosition ?: plant.worldPosition)
+        worldPosition = Vector2(relativePosition).add(parent?.worldPosition ?: plant.worldPosition)
 
         for(i in children){
             i.updateWorldPosition();
@@ -62,9 +64,9 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
     fun grow(percent: Float){
         var oldPos = Vector2(relativePosition.x, relativePosition.y)
 
-        relativePosition = relativePosition.add(relativeTargetPosition.scl(percent/100))
+        relativePosition = Vector2(relativePosition).add(Vector2(relativeTargetPosition).scl(percent/100))
 
-        if (relativePosition.dot(oldPos) < 0) die()
+        if (Vector2(relativePosition).dot(oldPos) < 0) die()
     }
 
     fun isFullyGrown(): Boolean {

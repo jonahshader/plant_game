@@ -46,7 +46,7 @@ class GameScreen : KtxScreen {
         PlantGame.batch.begin(worldCamera)
         TextRenderer.begin(PlantGame.batch, viewport, TextRenderer.Font.NORMAL, 32f, 0f)
         TextRenderer.color = Color.BLACK
-        TextRenderer.drawTextCentered(0f, 0f, "HELooolOOOLHfiodh")
+//        TextRenderer.drawTextCentered(0f, 0f, "HELooolOOOLHfiodh")
         TextRenderer.end()
         world.draw(PlantGame.shapeDrawer)
         PlantGame.batch.end()
