@@ -3,13 +3,15 @@ package jonahklayton.systems.plant
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 
+
+// growth/existence cost is taken care of here not in the nodes themselves
 class Plant(position: Vector2){
     private val STARTING_ENERGY = 100.0F
     private val ENERGY_PER_LENGTH = 0.1f;
 
     var root = Node(Vector2.Zero, null, this)
 
-    var energy = STARTING_ENERGY
+    var energy = 0F
 
     var nodes = mutableListOf<Node>()
         private set
@@ -25,6 +27,11 @@ class Plant(position: Vector2){
 
     fun update(timePassed: Float){
 
+
+
+        for(i in nodes){
+            i.isFullyGrown()
+        }
 
 
         manageLists()

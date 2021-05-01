@@ -1,5 +1,6 @@
 package jonahklayton.systems.plant
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import java.lang.invoke.MethodHandles.zero
 
@@ -24,6 +25,14 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
         private set
 
     var plant = plant
+
+    open fun updated(timePassed: Float){
+
+    }
+
+    open fun draw(renderer: ShapeRenderer){
+        renderer.line(worldPosition, parent?.worldPosition)
+    }
 
     fun addChild(child: Node){
         children.add(child)
