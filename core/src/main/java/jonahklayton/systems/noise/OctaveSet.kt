@@ -1,7 +1,5 @@
 package jonahklayton.systems.noise
 
-import external.OpenSimplex2F
-import jonahklayton.systems.noise.Octave
 import java.util.*
 
 open class OctaveSet(var ran: Random) {

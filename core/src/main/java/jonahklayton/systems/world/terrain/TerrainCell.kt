@@ -2,16 +2,17 @@ package jonahklayton.systems.world.terrain
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Color.*
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.RandomXS128
 import jonahklayton.systems.assets.Assets
-import kotlin.math.max
 
-class TerrainCell(type: TerrainType) {
+class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainType, private val rand: RandomXS128, private val terrain: Terrain) {
     companion object {
         const val SIZE = 16f
+        const val MIX_CHANCE = .25f
     }
+
     enum class TerrainType {
         DIRT,
         GRASS,
@@ -20,10 +21,10 @@ class TerrainCell(type: TerrainType) {
 
     private val waterTint = Color(.3f, .4f, 1f, 1f)
 
-    private var textureRegion: TextureRegion = when (type) {
-        TerrainType.DIRT -> Assets.getSprites().findRegion("white_pixel")
-        TerrainType.GRASS -> Assets.getSprites().findRegion("white_pixel")
-        TerrainType.STONE -> Assets.getSprites().findRegion("white_pixel")
+    private var sprite: Sprite = when (type) {
+        TerrainType.DIRT -> Sprite(Assets.getSprites().findRegion("white_pixel"))
+        TerrainType.GRASS -> Sprite(Assets.getSprites().findRegion("white_pixel"))
+        TerrainType.STONE -> Sprite(Assets.getSprites().findRegion("white_pixel"))
     }
 
     private val porousness: Float = when (type) {
@@ -52,7 +53,12 @@ class TerrainCell(type: TerrainType) {
 
     private var water = 0f
 
-    fun mix(otherCell: TerrainCell) {
+    init {
+        sprite.setSize(SIZE, SIZE)
+        sprite.setPosition(SIZE * xCell, SIZE * yCell)
+    }
+
+    private fun mix(otherCell: TerrainCell) {
         val avgPorusness = (porousness + otherCell.porousness)/2f
         val thisNextWater = ((1-avgPorusness) * .5f) * water + (avgPorusness * .5f) * otherCell.water
         val otherNextWater = ((1-avgPorusness) * .5f) * otherCell.water + (avgPorusness * .5f) * water
@@ -71,16 +77,31 @@ class TerrainCell(type: TerrainType) {
     }
 
     fun update(dt: Float) {
+        // try mix
+        if (rand.nextFloat() < MIX_CHANCE) {
+            var xMix = xCell
+            var yMix = yCell
+            when (rand.nextInt(4)) {
+                0->xMix--
+                1->xMix++
+                2->yMix--
+                3->yMix++
+            }
+            val otherCell = terrain.getCell(xMix, yMix)
+            if (otherCell != null) mix(otherCell)
+        }
+
         water += dt * waterGenPerSecond
         water = water.coerceIn(0f, maxWater)
     }
 
-    fun draw(batch: SpriteBatch, pos: Vector2) {
+    fun draw(batch: SpriteBatch) {
         val waterTintness = water / maxWater
-        batch.color.set(tint.r, tint.g, tint.b, tint.a)
-        batch.color.lerp(waterTint, waterTintness)
-
-        batch.draw(textureRegion, pos.x, pos.y, SIZE, SIZE)
+        sprite.color.set(tint.r, tint.g, tint.b, tint.a)
+//        sprite.color.lerp(waterTint, waterTintness)
+        sprite.draw(batch)
+//        batch.draw(textureRegion, xCell * SIZE, yCell * SIZE, SIZE, SIZE)
+        println("drawin at $xCell $yCell")
     }
 
     fun takeWater(requestedAmount: Float) : Float {
