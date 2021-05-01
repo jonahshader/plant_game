@@ -46,7 +46,7 @@ class MenuItem {
     ) {
         this.action = action
         this.x = x - width / 2
-        this.y = y
+        this.y = y + height / 2
         this.width = width
         this.height = height
         this.label = label
@@ -103,7 +103,7 @@ class MenuItem {
             shapeDrawer.filledRectangle(xo + MOUSE_OVER_INDENT * progressMapped, yo + MOUSE_OVER_INDENT * progressMapped, width, height)
             TextRenderer.begin(batch, viewport, font, height * .75f, 0.05f)
             TextRenderer.color = Color.WHITE
-            TextRenderer.drawTextCentered(xo + (width/2f) + MOUSE_OVER_INDENT * progressMapped, yo + (height/2f) + MOUSE_OVER_INDENT * progressMapped, label, height * (0.04f + progressMapped/24f))
+            TextRenderer.drawTextCentered(xo + (width/2f) + MOUSE_OVER_INDENT * progressMapped, yo + (height/2f) + MOUSE_OVER_INDENT * progressMapped, label, height * (0.04f + progressMapped/32f), .75f)
             TextRenderer.end()
 //        } else {
 //            shapeDrawer.setColor(0.8f, 0.8f, 0.8f, 1f)

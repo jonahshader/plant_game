@@ -65,8 +65,8 @@ object TextRenderer {
         batch!!.shader = null
     }
 
-    fun drawTextCentered(x: Float, y: Float, text: String, shadowDistance: Float) {
-        font?.color?.set(0f, 0f, 0f, color.a)
+    fun drawTextCentered(x: Float, y: Float, text: String, shadowDistance: Float, shadowOpacity: Float) {
+        font?.color?.set(0f, 0f, 0f, color.a * shadowOpacity)
         font?.draw(batch!!, text, x, y + font!!.capHeight/2f, 0f, Align.center, false)
         updateColor()
         font?.draw(batch!!, text, x + shadowDistance, y + (font!!.capHeight/2f) + shadowDistance, 0f, Align.center, false)
