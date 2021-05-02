@@ -2,9 +2,10 @@ package jonahklayton.systems.plant
 
 import com.badlogic.gdx.math.Vector2
 import jonahklayton.systems.world.World
+import kotlin.math.PI
 import kotlin.random.Random
 
-class EnemyPlant(position: Vector2, energy: Float, world: World, APS: Int) : Plant(position, energy, world){
+class EnemyPlant(position: Vector2, energy: Float, world: World, APS: Int) : Plant(position, energy, world, PI.toFloat()){
 
     var currentStem: Node = root
     var timeSinceLastAction = 0F

@@ -36,6 +36,8 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, var plant: Plant
     private val growSound: Sound = Assets.manager.get(LIMB_GROW_SOUND)
     private val growSoundId = SoundSystem.playSoundInWorld(growSound, worldPosition, .5f, .5f)
 
+    var color = Color(1f, 1f, 1f, 1f)
+
     init {
         growSound.setLooping(growSoundId, true)
     }
@@ -50,8 +52,14 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, var plant: Plant
         }
     }
 
-    open fun draw(renderer: ShapeDrawer, brightness: Float){
+    open fun draw(renderer: ShapeDrawer, brightness: Float, hue: Float){
         if (parent != null) {
+            val hsv = FloatArray(3)
+            color.toHsv(hsv)
+            hsv[1] += hue
+            hsv[0] += hue
+            color = color.fromHsv(hsv)
+            renderer.setColor(color)
             renderer.line(worldPosition, parent!!.worldPosition, thickness)
         }
     }
