@@ -14,6 +14,7 @@ import jonahklayton.systems.assets.Assets
 import jonahklayton.systems.assets.Assets.MENU_MOUSE_OVER_SOUND
 import jonahklayton.systems.assets.Assets.MENU_OPEN_SOUND
 import jonahklayton.systems.sound.SoundSystem
+import jonahklayton.systems.ui.CustomShapes
 import jonahklayton.systems.ui.TextRenderer
 import space.earlygrey.shapedrawer.ShapeDrawer
 import kotlin.math.pow
@@ -94,17 +95,17 @@ class MenuItem {
         val yo = offset.y + y
 //        val m = mouseWorld
         shapeDrawer.setColor(0.0f, 0.0f, 0.0f, .5f)
-        shapeDrawer.filledRectangle(xo, yo, width, height)
+        CustomShapes.filledRoundedRect(shapeDrawer, xo, yo, width, height, 6f)
 
         val progressMapped = progress.pow(1/2f)
 
 //        if (m.x >= xo && m.y >= yo && m.x <= xo + width && m.y <= yo + height) {
-            shapeDrawer.setColor(0.8f, 0.8f, 0.8f, 1f)
-            shapeDrawer.filledRectangle(xo + MOUSE_OVER_INDENT * progressMapped, yo + MOUSE_OVER_INDENT * progressMapped, width, height)
-            TextRenderer.begin(batch, viewport, font, height * .75f, 0.05f)
-            TextRenderer.color = Color.WHITE
-            TextRenderer.drawTextCentered(xo + (width/2f) + MOUSE_OVER_INDENT * progressMapped, yo + (height/2f) + MOUSE_OVER_INDENT * progressMapped, label, height * (0.04f + progressMapped/32f), .75f)
-            TextRenderer.end()
+        shapeDrawer.setColor(0.8f, 0.8f, 0.8f, 1f)
+        CustomShapes.filledRoundedRect(shapeDrawer, xo + MOUSE_OVER_INDENT * progressMapped, yo + MOUSE_OVER_INDENT, width, height, 6f)
+        TextRenderer.begin(batch, viewport, font, height * .75f, 0.05f)
+        TextRenderer.color = Color.WHITE
+        TextRenderer.drawTextCentered(xo + (width/2f) + MOUSE_OVER_INDENT * progressMapped, yo + (height/2f) + MOUSE_OVER_INDENT * progressMapped, label, height * (0.04f + progressMapped/32f), .75f)
+        TextRenderer.end()
 //        } else {
 //            shapeDrawer.setColor(0.8f, 0.8f, 0.8f, 1f)
 //            shapeDrawer.filledRectangle(xo, yo, width, height)
