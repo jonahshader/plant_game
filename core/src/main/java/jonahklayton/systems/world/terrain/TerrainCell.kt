@@ -108,7 +108,13 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
         mixTimer -= dt
 
         water += dt * waterGenPerSecond
+        val nan = water.isNaN()
         water = water.coerceIn(0f, maxWater)
+        if (water.isNaN()) {
+            water = 0f
+            println("Water NaN!!!")
+            if (!nan) println("wasn't nan before")
+        }
     }
 
     fun draw() {
@@ -148,5 +154,4 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
     private fun resetTimer() {
         mixTimer += rand.nextFloat() * mixTimerInterval
     }
-
 }

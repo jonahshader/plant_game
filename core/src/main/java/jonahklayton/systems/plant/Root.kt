@@ -19,7 +19,7 @@ class Root(relativeTargetPosition: Vector2, parent: Node?, plant: Plant, storedE
 
     fun getWater(quantity: Float): Float{
         val amount = min(quantity, waterLeftInTick)
-        return if (parent != null) {
+        return if (parent != null && amount > 0) {
             val successfulAmount = terrain.takeWater(amount, parent!!.worldPosition, worldPosition)
             waterLeftInTick -= successfulAmount
             successfulAmount

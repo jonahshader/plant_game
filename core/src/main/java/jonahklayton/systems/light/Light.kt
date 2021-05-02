@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2
 import jonahklayton.systems.world.World
 import space.earlygrey.shapedrawer.ShapeDrawer
 import kotlin.math.PI
+import kotlin.math.pow
 
 class Light(private val world: World) {
     private val rays = mutableListOf<Ray>()
@@ -74,7 +75,7 @@ class Light(private val world: World) {
                 perpendicularOffset.set(lightPerpendicular)
                 perpendicularOffset.scl(spawnLineLength * (rand.nextFloat() - .5f))
                 val rayPos = Vector2(lightSpawnPosLineCenter).add(perpendicularOffset)
-                rays += Ray(rayPos, Vector2(worldToSunAngle).scl(-1f), sin(dayLightRadians()), spawnLineLength * 2f, world)
+                rays += Ray(rayPos, Vector2(worldToSunAngle).scl(-1f), sin(dayLightRadians()).coerceAtLeast(0f).pow(1/2f), spawnLineLength * 2f, world)
             }
         }
 
