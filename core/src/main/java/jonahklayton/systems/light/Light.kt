@@ -16,7 +16,7 @@ class Light(private val world: World) {
     private val lightSpawnPosLineCenter = Vector2()
     private var spawnLineLength = 10f
 
-    private var raysPerSecond = 30f
+    private var raysPerLengthPerSecond = 10f
     private var spawnQueue = 0f
 
     private fun dayLightRadians() : Float = (-world.getDayProgress() * 2 * PI + PI).toFloat()
@@ -54,7 +54,7 @@ class Light(private val world: World) {
     }
 
     fun update(dt: Float) {
-        spawnQueue += dt * raysPerSecond
+        spawnQueue += dt * raysPerLengthPerSecond * spawnLineLength
 
         val toSpawn = spawnQueue.toInt()
         spawnQueue -= toSpawn

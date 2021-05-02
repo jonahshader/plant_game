@@ -1,6 +1,7 @@
 package jonahklayton.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -12,10 +13,11 @@ import jonahklayton.PlantGame
 import jonahklayton.systems.world.Level
 import jonahklayton.systems.world.World
 import jonahklayton.systems.world.terrain.TerrainGenerator
+import ktx.app.KtxInputAdapter
 import ktx.app.KtxScreen
 import ktx.graphics.begin
 
-class GameScreen : KtxScreen {
+class GameScreen : KtxScreen, KtxInputAdapter {
     companion object {
         const val GAME_WIDTH = 640f
         const val GAME_HEIGHT = 360f
@@ -26,6 +28,9 @@ class GameScreen : KtxScreen {
     private lateinit var inputMultiplexer: InputMultiplexer
     private lateinit var world: World
 
+    private val mousePressPos = Vector2()
+    private var mouseDown = false
+
     override fun show() {
         worldCamera = OrthographicCamera()
         viewport = FillViewport(GAME_WIDTH, GAME_HEIGHT, worldCamera)
@@ -34,11 +39,19 @@ class GameScreen : KtxScreen {
         gen.octaveSet.addOctaveFractal(.005, 1.0, .5, .5, 4)
         inputMultiplexer = InputMultiplexer()
         Gdx.input.inputProcessor = inputMultiplexer
+        inputMultiplexer.addProcessor(this)
         world = World(Level(Vector2(), Vector2(50f, 0f), gen), inputMultiplexer, worldCamera)
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
     }
 
     override fun render(delta: Float) {
+        // mouse panning
+        if (mouseDown) {
+            val tempDelta = mouseToWorldVec()
+            mousePressPos.set(mouseToWorldVec())
+            worldCamera.position.sub(tempDelta.x, tempDelta.y, 0f)
+        }
+
         // run stuff
         world.update(delta)
 
@@ -51,6 +64,24 @@ class GameScreen : KtxScreen {
 //        TextRenderer.end()
         world.draw(PlantGame.shapeDrawer)
         PlantGame.batch.end()
+    }
+
+    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        if (button == Input.Buttons.MIDDLE) {
+            mousePressPos.set(mouseToWorldVec())
+            mouseDown = true
+            return true
+        }
+
+        return false
+    }
+
+    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        if (button == Input.Buttons.MIDDLE) {
+            mouseDown = false
+            return true
+        }
+        return false
     }
 
     override fun resize(width: Int, height: Int) {
