@@ -32,7 +32,7 @@ class MenuScreen : KtxScreen {
     init {
         menu.addMenuItem("Tutorial") {ScreenManager.push(GameScreen(0))}
         menu.addMenuItem("Singleplayer") {ScreenManager.push(GameScreen(1))}
-        menu.addMenuItem("Settings") {}
+        menu.addMenuItem("Settings") {ScreenManager.push(SettingsScreen())}
         menu.addMenuItem("Exit") {Gdx.app.exit()}
     }
 
