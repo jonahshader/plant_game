@@ -73,6 +73,8 @@ class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera
     }
 
     fun draw(renderer: ShapeDrawer) {
+//        playerPlant.drawShadows(renderer, getSkyBrightness())
+//        enemyPlant.drawShadows(renderer, getSkyBrightness())
         terrain.draw(getSkyBrightness())
         playerPlant.draw(renderer, getSkyBrightness())
         enemyPlant.draw(renderer, getSkyBrightness())

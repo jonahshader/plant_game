@@ -2,8 +2,10 @@ package jonahklayton.systems.plant
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
+import jonahklayton.systems.light.Light
 import jonahklayton.systems.world.World
 import space.earlygrey.shapedrawer.ShapeDrawer
+import kotlin.math.PI
 
 
 // growth/existence cost is taken care of here not in the nodes themselves
@@ -137,9 +139,14 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World, private
     }
 
     open fun draw(renderer: ShapeDrawer, brightness: Float){
-        for(i in nodes){
-            i.draw(renderer, brightness, hue)
-        }
+        drawShadows(renderer, brightness)
+        nodes.forEach {it.draw(renderer, brightness, hue)}
+    }
+
+    private fun drawShadows(renderer: ShapeDrawer, brightness: Float) {
+        val shadowOffset = Vector2(1f, 0f)
+        shadowOffset.rotateRad(Light.dayLightRadians(world)).scl(-1.5f)
+        nodes.forEach {it.drawShadow(renderer, brightness, shadowOffset)}
     }
 
     fun addRoot(root: Root){

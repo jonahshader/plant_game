@@ -31,6 +31,8 @@ class Root(relativeTargetPosition: Vector2, parent: Node?, plant: Plant, storedE
         super.draw(renderer, brightness, hue)
     }
 
+    override fun drawShadow(renderer: ShapeDrawer, brightness: Float, offset: Vector2) {}
+
     override fun update(timePassed: Float){
         waterLeftInTick = getAbsorptionRate()*timePassed
         super.update(timePassed)
