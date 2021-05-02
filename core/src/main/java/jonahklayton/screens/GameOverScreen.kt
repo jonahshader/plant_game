@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.FitViewport
 import jonahklayton.PlantGame
 import jonahklayton.systems.screen.ScreenManager
+import jonahklayton.systems.sound.SoundSystem
 import jonahklayton.systems.ui.TextRenderer
 import jonahklayton.systems.ui.menu.Menu
 import ktx.app.KtxScreen
@@ -27,6 +28,7 @@ class GameOverScreen(private val failedLevel: Int) : KtxScreen {
 
     override fun show() {
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
+        SoundSystem.stopMusic()
     }
 
     override fun render(delta: Float) {

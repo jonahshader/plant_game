@@ -2,6 +2,7 @@ package jonahklayton.systems.assets
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.utils.Disposable
+import jonahklayton.systems.sound.SoundSystem
 
 object Assets : Disposable {
     // Fonts
@@ -34,6 +36,10 @@ object Assets : Disposable {
     const val MENU_MOUSE_OVER_SOUND = "audio/sounds/menu_mouseover.ogg"
     const val DONE_GROWING_SOUND = "audio/sounds/done_growing.ogg"
     const val LIMB_GROW_SOUND = "audio/sounds/limb_grow.ogg"
+
+    // Music
+    const val GAME_MUSIC = "audio/music/ingame.ogg"
+    const val MENU_MUSIC = "audio/music/menu.ogg"
 
 
     // Sprites
@@ -61,6 +67,7 @@ object Assets : Disposable {
 
     fun finishLoading() {
         manager.finishLoading()
+        SoundSystem.loadMusic()
     }
 
     private fun loadShaders() {
@@ -94,6 +101,9 @@ object Assets : Disposable {
         manager.load(MENU_MOUSE_OVER_SOUND, Sound::class.java)
         manager.load(DONE_GROWING_SOUND, Sound::class.java)
         manager.load(LIMB_GROW_SOUND, Sound::class.java)
+
+        manager.load(GAME_MUSIC, Music::class.java)
+        manager.load(MENU_MUSIC, Music::class.java)
     }
 
     override fun dispose() {

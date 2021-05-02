@@ -1,16 +1,26 @@
 package jonahklayton.systems.sound
 
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.Viewport
 import jonahklayton.screens.GameScreen.Companion.GAME_WIDTH
+import jonahklayton.systems.assets.Assets
 import kotlin.math.pow
 
 object SoundSystem {
     var overallVolume = 1f
+    var soundVolume = 1f
+    var musicVolume = .3f
+        set(value) {
+            field = value
+            updateVolume()
+        }
     lateinit var camera: Camera
 
+    lateinit var menuMusic: Music
+    lateinit var gameMusic: Music
     /**
      * play sound with calculated panning related to sound and camera position
      * if sound position is left of camera position the panning is negative
@@ -29,12 +39,43 @@ object SoundSystem {
         pan = (-1f).coerceAtLeast(pan)
         pan = 1f.coerceAtMost(pan)
 //        if (volScale < 0.01) return -1  // early return if the sound is barely audible. don't want entire world to emit sounds all the time
-        val realVolume = volume * overallVolume * volScale
+        val realVolume = volume * overallVolume * soundVolume * volScale
         return s.play(realVolume, pitch, pan)
     }
 
     fun playSoundStandalone(s: Sound, volume: Float, pan: Float) {
-        val realVolume = volume * overallVolume
+        val realVolume = volume * overallVolume * soundVolume
         s.play(realVolume, 1f, pan)
+    }
+
+    fun loadMusic() {
+        menuMusic = Assets.manager.get(Assets.MENU_MUSIC)
+        gameMusic = Assets.manager.get(Assets.GAME_MUSIC)
+    }
+
+    fun playMenuMusic() {
+        gameMusic.stop()
+        if (!menuMusic.isPlaying) {
+            menuMusic.isLooping = true
+            updateVolume()
+            menuMusic.play()
+        }
+    }
+
+    fun playGameMusic() {
+        stopMusic()
+        gameMusic.isLooping = true
+        updateVolume()
+        gameMusic.play()
+    }
+
+    fun stopMusic() {
+        gameMusic.stop()
+        menuMusic.stop()
+    }
+
+    private fun updateVolume() {
+        gameMusic.volume = overallVolume * musicVolume
+        menuMusic.volume = overallVolume * musicVolume
     }
 }

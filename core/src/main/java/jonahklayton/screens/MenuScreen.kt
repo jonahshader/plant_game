@@ -50,6 +50,8 @@ class MenuScreen : KtxScreen {
 
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
         bgViewport.update(Gdx.graphics.width, Gdx.graphics.height)
+
+        SoundSystem.playMenuMusic()
     }
 
     override fun render(delta: Float) {
