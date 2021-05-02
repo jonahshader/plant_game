@@ -4,21 +4,28 @@ import com.badlogic.gdx.math.Vector2
 import jonahklayton.systems.world.World
 import kotlin.random.Random
 
-class EnemyPlant(position: Vector2, energy: Float, world: World) : Plant(position, energy, world){
-
-    companion object{
-        const val MAX_LEAVES = 2
-        const val GROWTH_THRESHOLD = 100
-    }
+class EnemyPlant(position: Vector2, energy: Float, world: World, APS: Int) : Plant(position, energy, world){
 
     var currentStem: Node = root
+    var timeSinceLastAction = 0F
+    var APS = APS
+    val maxLeaves = Random.nextInt(2, 6)
+    var growthThreshold = 50
 
     override fun update(timePassed: Float) {
         super.update(timePassed)
 
-        if(world.getIsMorning() && getGrowingNodes().isEmpty() && storedEnergy() > GROWTH_THRESHOLD){
-            if(currentBottleneck().toUpperCase() == "LIGHT"){
-                if(currentStem.children.size >= MAX_LEAVES) makeStem()
+        timeSinceLastAction += timePassed
+
+        if(world.getIsMorning()
+            && getGrowingNodes().isEmpty()
+            && storedEnergy() > growthThreshold
+            && timeSinceLastAction*APS >= 1){
+
+                timeSinceLastAction = 0F
+
+                if(currentBottleneck().toUpperCase() == "LIGHT"){
+                if(currentStem.children.size >= maxLeaves) makeStem()
                 else makeLeaf()
             }else{
                 makeRoot()
@@ -32,7 +39,7 @@ class EnemyPlant(position: Vector2, energy: Float, world: World) : Plant(positio
 
         var moveDist = 10
 
-        var lr = if(Random.nextBoolean()) 90F else -90F
+        var lr = if(Random.nextBoolean()) 70F else -70F
 
         var pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
             .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg()+lr)
@@ -79,6 +86,8 @@ class EnemyPlant(position: Vector2, energy: Float, world: World) : Plant(positio
     }
 
     fun makeRoot(){
+        var lr = if(Random.nextBoolean()) 45F else -45F
+
         roots.shuffle()
         var parent = roots.get(0)
         if(parent == root){
@@ -88,12 +97,12 @@ class EnemyPlant(position: Vector2, energy: Float, world: World) : Plant(positio
         var moveDist = 10
 
         var pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
-            .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg())
+            .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg() + lr)
             .scl(Random.nextFloat()*20+5f))
         while(!world.terrain.isUnderground(pos)){
             moveDist += 5
             pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
-                .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg())
+                .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg() + lr)
                 .scl(Random.nextFloat()*20+25f))
         }
 

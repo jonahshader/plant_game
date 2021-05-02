@@ -8,7 +8,7 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 
 // growth/existence cost is taken care of here not in the nodes themselves
 open class Plant(position: Vector2, startingEnergy: Float, world: World){
-    private val ENERGY_PER_LENGTH_SUSTAINED = 0.01F
+    private val ENERGY_PER_LENGTH_SUSTAINED = 0.05F
     private val ENERGY_PER_LENGTH_GROWN = 1F
     private val ENERGY_PER_LENGTH_KILLED = 0.9F
     private val STORE_RATIO_FOR_GROW = 0.05F
