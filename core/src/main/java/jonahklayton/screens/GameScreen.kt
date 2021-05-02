@@ -51,7 +51,7 @@ class GameScreen(private val levelNumber: Int) : KtxScreen, KtxInputAdapter {
         inputMultiplexer.addProcessor(this)
         val weather = OctaveSet(RandomXS128(levelNumber.toLong()))
         weather.addOctaveFractal(0.05, 20.0, .5, .5, 3)
-        world = World(Level(0f, 250f+50f*levelNumber, gen, weather, levelNumber), inputMultiplexer, worldCamera)
+        world = World(Level(0f, 250f+50f*levelNumber, gen, weather, levelNumber), inputMultiplexer, worldCamera, viewport)
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
         SoundSystem.playGameMusic()
     }

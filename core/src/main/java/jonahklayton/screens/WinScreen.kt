@@ -41,7 +41,7 @@ class WinScreen(private val passedLevel: Int) : KtxScreen {
         TextRenderer.begin(PlantGame.batch, viewport, TextRenderer.Font.NORMAL, 48f, .05f + kotlin.math.sin(time * 2 * PI * 2)
             .toFloat() * .05f)
         TextRenderer.drawTextCentered(0f, 100f, "You Beat Level $passedLevel!", 3f, 1f)
-        menu.run(delta)
+        menu.run(delta, viewport)
         menu.draw(PlantGame.batch, PlantGame.shapeDrawer, viewport)
         TextRenderer.end()
         PlantGame.batch.end()

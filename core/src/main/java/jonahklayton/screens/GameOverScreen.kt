@@ -39,7 +39,7 @@ class GameOverScreen(private val failedLevel: Int) : KtxScreen {
             PlantGame.batch, viewport, TextRenderer.Font.HEAVY, 48f, .05f + kotlin.math.sin(time * 2 * PI * 2)
             .toFloat() * .05f)
         TextRenderer.drawTextCentered(0f, 100f, "You Failed Level $failedLevel!", 3f, 1f)
-        menu.run(delta)
+        menu.run(delta, viewport)
         menu.draw(PlantGame.batch, PlantGame.shapeDrawer, viewport)
         TextRenderer.end()
         PlantGame.batch.end()

@@ -4,6 +4,7 @@ import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.math.MathUtils.PI
 import com.badlogic.gdx.math.MathUtils.sin
+import com.badlogic.gdx.utils.viewport.ScalingViewport
 import jonahklayton.screens.GameOverScreen
 import jonahklayton.screens.WinScreen
 import jonahklayton.systems.light.Light
@@ -16,9 +17,9 @@ import jonahklayton.systems.world.terrain.Terrain
 import ktx.graphics.center
 import space.earlygrey.shapedrawer.ShapeDrawer
 
-class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera: Camera, menu: Boolean = false) {
+class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera: Camera, viewport: ScalingViewport, menu: Boolean = false) {
     val terrain = Terrain(this, level.generator)
-    private val playerPlant = PlayerPlant(level.playerPos, 100F + if(level.levelNumber==0) 900f else 0f, this, camera)
+    private val playerPlant = PlayerPlant(level.playerPos, 100F + if(level.levelNumber==0) 900f else 0f, this, camera, viewport)
     private val enemyPlant = EnemyPlant(level.enemyPos, 150F + (level.levelNumber-1) * 20, this, level.levelNumber)
 
     private val light = Light(this)

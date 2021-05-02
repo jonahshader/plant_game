@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.viewport.ScalingViewport
+import com.badlogic.gdx.utils.viewport.Viewport
 import jonahklayton.systems.assets.Assets
 import jonahklayton.systems.assets.Assets.MENU_MOUSE_OVER_SOUND
 import jonahklayton.systems.assets.Assets.MENU_OPEN_SOUND
@@ -67,10 +68,11 @@ open class MenuItem {
         height = previousMenuItem.height
     }
 
-    open fun run(offset: Vector2, dt: Float) {
+    open fun run(offset: Vector2, dt: Float, viewport: ScalingViewport) {
         val xo = offset.x + x
         val yo = offset.y + y
-        val m = mouseWorld
+
+        val m = viewport.unproject(Vector2(Gdx.input.x.toFloat(), Gdx.input.y.toFloat()))
         if (m.x >= xo && m.y >= yo && m.x <= xo + width && m.y <= yo + height) {
             if (Gdx.input.justTouched()) {
                 SoundSystem.playSoundStandalone(Assets.manager.get(MENU_OPEN_SOUND, Sound::class.java), .8f, 0f)
@@ -93,32 +95,21 @@ open class MenuItem {
     open fun draw(batch: SpriteBatch, shapeDrawer: ShapeDrawer, viewport: ScalingViewport, offset: Vector2) {
         val xo = offset.x + x
         val yo = offset.y + y
-//        val m = mouseWorld
         shapeDrawer.setColor(0.0f, 0.0f, 0.0f, .5f)
         CustomShapes.filledRoundedRect(shapeDrawer, xo, yo, width, height, 6f)
 
         val progressMapped = progress.pow(1/2f)
 
-//        if (m.x >= xo && m.y >= yo && m.x <= xo + width && m.y <= yo + height) {
         shapeDrawer.setColor(0.8f, 0.8f, 0.8f, 1f)
         CustomShapes.filledRoundedRect(shapeDrawer, xo + MOUSE_OVER_INDENT * progressMapped, yo + MOUSE_OVER_INDENT * progressMapped, width, height, 6f)
         TextRenderer.begin(batch, viewport, font, height * .75f, 0.05f)
         TextRenderer.color = Color.WHITE
         TextRenderer.drawTextCentered(xo + (width/2f) + MOUSE_OVER_INDENT * progressMapped, yo + (height/2f) + MOUSE_OVER_INDENT * progressMapped, label, height * (0.04f + progressMapped/32f), .75f)
         TextRenderer.end()
-//        } else {
-//            shapeDrawer.setColor(0.8f, 0.8f, 0.8f, 1f)
-//            shapeDrawer.filledRectangle(xo, yo, width, height)
-//            TextRenderer.begin(batch, viewport, font, height * .75f, 0.00f)
-//            TextRenderer.color = Color.WHITE
-//            TextRenderer.drawTextCentered(xo + width/2f, yo + height/2f, label, height/48f)
-//            TextRenderer.end()
-//        }
     }
 
-    internal val mouseWorld: Vector2
-        internal get() {
-            val mouseWorld = camera.unproject(Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
-            return Vector2(mouseWorld.x, mouseWorld.y)
-        }
+    fun mouseWorld(viewport: Viewport): Vector2 {
+        val mouseWorld = viewport.unproject(Vector2(Gdx.input.x.toFloat(), Gdx.input.y.toFloat()))
+        return Vector2(mouseWorld.x, mouseWorld.y)
+    }
 }

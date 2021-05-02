@@ -35,7 +35,7 @@ class Menu(private val font: TextRenderer.Font, private val camera: Camera, priv
         for (item in items) item.draw(batch, shapeDrawer, viewport, position)
     }
 
-    fun run(dt: Float) {
-        for (item in items) item.run(position, dt)
+    fun run(dt: Float, viewport: ScalingViewport) {
+        for (item in items) item.run(position, dt, viewport)
     }
 }
