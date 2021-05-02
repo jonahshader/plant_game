@@ -72,11 +72,11 @@ class MenuScreen : KtxScreen {
 
         TextRenderer.begin(PlantGame.batch, viewport, TextRenderer.Font.HEAVY, 125f, 0.05f)
         TextRenderer.color = Color.WHITE
-        TextRenderer.drawTextCentered(0f, Gdx.graphics.height/2-175f, "PVP:", 10f, 0.75f)
+        TextRenderer.drawTextCentered(0f, viewport.worldHeight*.5f - 130f, "PVP:", 10f, 0.75f)
         TextRenderer.end()
         TextRenderer.begin(PlantGame.batch, viewport, TextRenderer.Font.HEAVY, 75f, 0.05f)
         TextRenderer.color = Color.WHITE
-        TextRenderer.drawTextCentered(0f, Gdx.graphics.height/2-275f, "Plant Vs Plant", 4f, 0.75f)
+        TextRenderer.drawTextCentered(0f, viewport.worldHeight*.5f-225f, "Plant Vs Plant", 4f, 0.75f)
         TextRenderer.end()
 
         menu.draw(PlantGame.batch, PlantGame.shapeDrawer, viewport)

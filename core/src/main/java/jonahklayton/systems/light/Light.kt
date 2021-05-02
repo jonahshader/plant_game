@@ -89,7 +89,7 @@ class Light(private val world: World) {
             }
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) renderingEnabled = !renderingEnabled
+        if (Gdx.input.isKeyJustPressed(Input.Keys.L) || Gdx.input.isKeyJustPressed(Input.Keys.P)) renderingEnabled = !renderingEnabled
 
         // run rays
         rays.forEach {it.update()}
