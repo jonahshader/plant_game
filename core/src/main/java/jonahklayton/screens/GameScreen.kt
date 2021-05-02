@@ -35,7 +35,7 @@ class GameScreen : KtxScreen {
         gen.octaveSet.addOctaveFractal(.005, 1.0, .5, .5, 4)
         inputMultiplexer = InputMultiplexer()
         Gdx.input.inputProcessor = inputMultiplexer
-        world = World(Level(Vector2(), Vector2(50f, 0f), gen), inputMultiplexer, worldCamera)
+        world = World(Level(Vector2(), Vector2(50f, 13f), gen), inputMultiplexer, worldCamera)
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
     }
 

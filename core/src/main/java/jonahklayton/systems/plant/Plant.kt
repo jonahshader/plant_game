@@ -85,6 +85,8 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
         }
     }
 
+    fun getGrowingNodes() = nodes.filter {t->!t.isFullyGrown()}
+
     open fun update(timePassed: Float){
 
         //use energy to maintain plant

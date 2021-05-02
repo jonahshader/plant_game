@@ -5,10 +5,7 @@ import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.math.Vector2
 import jonahklayton.PlantGame
 import jonahklayton.systems.light.Light
-import jonahklayton.systems.plant.Leaf
-import jonahklayton.systems.plant.Node
-import jonahklayton.systems.plant.Plant
-import jonahklayton.systems.plant.PlayerPlant
+import jonahklayton.systems.plant.*
 import jonahklayton.systems.ui.Hud
 import jonahklayton.systems.world.terrain.Terrain
 import jonahklayton.systems.world.terrain.TerrainChunk
@@ -17,7 +14,7 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 class World(level: Level, inputMultiplexer: InputMultiplexer, camera: Camera) {
     val terrain = Terrain(this, level.generator)
     private val playerPlant = PlayerPlant(level.playerPos, 100F, this, camera)
-    private val enemyPlant = Plant(level.enemyPos, 100F, this)
+    private val enemyPlant = EnemyPlant(level.enemyPos, 300F, this)
 
     private val light = Light(this)
 
@@ -65,4 +62,5 @@ class World(level: Level, inputMultiplexer: InputMultiplexer, camera: Camera) {
 
     fun getDay() : Int = (time / dayLength).toInt()
     fun getDayProgress() : Float = (time / dayLength).toFloat() - getDay()
+    fun getIsMorning() : Boolean = getDayProgress() < 0.25F
 }
