@@ -31,7 +31,7 @@ class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var trave
         world.getAllLeaves().forEach {
             if (it.parent != null) {
                 if (isIntersecting(pos, tipPos, it.parent!!.worldPosition, it.worldPosition)) {
-                    it.plant.recieveLight(efficiency * energy)
+                    it.plant.receiveLight(efficiency * energy)
                     energy *= (1 - efficiency)
                 }
             }
