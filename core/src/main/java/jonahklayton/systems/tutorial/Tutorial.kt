@@ -16,10 +16,10 @@ object Tutorial {
         messages += Message("Below is your plant's root.\nHold right click and drag up to add a leaf!", Vector2(400f, 50f), Vector2(0f, 100f))
         messages += Message("Leaves cannot be branched off.\nLeft click and drag from the root\ninto the air to make a stem.", Vector2(350f, 80f), Vector2(0f, 40f))
         messages += Message("You can build anything off stems.\nClick and drag from the root into the\nground to make another root.", Vector2(390f, 80f), Vector2(0f, -100f))
-        messages += Message("Roots suck up water from the ground.\nWater comes from the soil and is absorbed by stone.\nWater flows through grass the quickest and\nrainfall will occasionally saturate the grass.", Vector2(450f, 100f), Vector2())
+        messages += Message("Roots suck up water from the ground.\nWater comes from the soil and is absorbed by stone.\nWater flows through grass the quickest and\nrainfall will occasionally saturate the grass.", Vector2(500f, 100f), Vector2())
         messages += Message("Your plant needs both water and light to grow.\nAbove are indicators that show what the plant needs.", Vector2(450f, 50f), Vector2(0f, 0f))
         messages += Message("The other plant is trying to take your resources!\nKill it by taking its resources to win the level!", Vector2(450f, 50f), Vector2(0f, 0f))
-        messages += Message("You can press L to make the light rays visible.\nLeaves absorb some light and stems block some light.", Vector2(400f, 50f), Vector2(0f, 0f))
+        messages += Message("You can press L to make the light rays visible.\nLeaves absorb some light and stems block some light.", Vector2(450f, 50f), Vector2(0f, 0f))
         messages += Message("Each level gets more difficult.\nHave fun!", Vector2(400f, 50f), Vector2(0f, 0f))
     }
 

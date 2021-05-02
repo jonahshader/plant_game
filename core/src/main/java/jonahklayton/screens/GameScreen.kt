@@ -52,6 +52,7 @@ class GameScreen(private val levelNumber: Int) : KtxScreen, KtxInputAdapter {
         weather.addOctaveFractal(0.05, 20.0, .5, .5, 3)
         world = World(Level(0f, 250f+50f*levelNumber, gen, weather, levelNumber), inputMultiplexer, worldCamera)
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
+        SoundSystem.playGameMusic()
     }
 
     override fun render(delta: Float) {

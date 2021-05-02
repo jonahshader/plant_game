@@ -10,6 +10,7 @@ import jonahklayton.PlantGame
 import jonahklayton.screens.GameScreen.Companion.GAME_HEIGHT
 import jonahklayton.screens.GameScreen.Companion.GAME_WIDTH
 import jonahklayton.systems.screen.ScreenManager
+import jonahklayton.systems.sound.SoundSystem
 import jonahklayton.systems.ui.TextRenderer
 import jonahklayton.systems.ui.menu.Menu
 import ktx.app.KtxScreen
@@ -30,6 +31,7 @@ class WinScreen(private val passedLevel: Int) : KtxScreen {
 
     override fun show() {
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
+        SoundSystem.stopMusic()
     }
 
     override fun render(delta: Float) {
