@@ -7,12 +7,13 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.Viewport
 import jonahklayton.screens.GameScreen.Companion.GAME_WIDTH
 import jonahklayton.systems.assets.Assets
+import jonahklayton.systems.settings.Settings
 import kotlin.math.pow
 
 object SoundSystem {
-    var overallVolume = 1f
-    var soundVolume = 1f
-    var musicVolume = .3f
+    var overallVolume = (Settings.settings["overall-volume"] as String).toFloat()
+    var soundVolume = (Settings.settings["sound-volume"] as String).toFloat()
+    var musicVolume = (Settings.settings["music-volume"] as String).toFloat()
         set(value) {
             field = value
             updateVolume()

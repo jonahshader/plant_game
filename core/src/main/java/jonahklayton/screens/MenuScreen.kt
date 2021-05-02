@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import jonahklayton.PlantGame
 import jonahklayton.systems.noise.OctaveSet
 import jonahklayton.systems.screen.ScreenManager
+import jonahklayton.systems.settings.Settings
 import jonahklayton.systems.sound.SoundSystem
 import jonahklayton.systems.ui.TextRenderer
 import jonahklayton.systems.ui.menu.Menu
@@ -34,6 +35,8 @@ class MenuScreen : KtxScreen {
         menu.addMenuItem("Singleplayer") {ScreenManager.push(GameScreen(1))}
         menu.addMenuItem("Settings") {ScreenManager.push(SettingsScreen())}
         menu.addMenuItem("Exit") {Gdx.app.exit()}
+
+        if((Settings.settings["fullscreen"] as String).toBoolean()) Gdx.graphics.setFullscreenMode(Gdx.graphics.displayMode)
     }
 
     override fun show() {
