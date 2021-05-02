@@ -9,10 +9,10 @@ class EnemyPlant(xPosition: Float, energy: Float, world: World, difficulty: Int)
 
     var currentStem: Node = root
     var timeSinceLastAction = 0F
-    var APS = difficulty
+    var APS = (difficulty*.75) + .75f
     val maxLeaves = Random.nextInt(2, 6)
-    var growthThreshold = 50/difficulty+7
-    var branchChance = 0.9F/difficulty
+    var growthThreshold = (100/(difficulty+1))+7
+    var branchChance = (1.9F)/(difficulty+1)
 
     override fun update(timePassed: Float) {
         super.update(timePassed)
@@ -74,7 +74,7 @@ class EnemyPlant(xPosition: Float, energy: Float, world: World, difficulty: Int)
         var lr = 0F
 
         if(branch){
-            lr += 45F - Random.nextInt(0, 1)*90F
+            lr += 45F - Random.nextInt(0, 2)*90F
         }
 
         var moveDist = 10
@@ -117,7 +117,7 @@ class EnemyPlant(xPosition: Float, energy: Float, world: World, difficulty: Int)
             moveDist += 5
             pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
                 .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg() + lr)
-                .scl(Random.nextFloat()*20+25f))
+                .scl(Random.nextFloat()*20+20f))
         }
 
         pos.sub(parent.worldPosition)

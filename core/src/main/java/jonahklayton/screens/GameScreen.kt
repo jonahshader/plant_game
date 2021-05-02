@@ -8,11 +8,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.utils.Scaling
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.*
 import jonahklayton.PlantGame
 import jonahklayton.systems.noise.OctaveSet
 import jonahklayton.systems.sound.SoundSystem
+import jonahklayton.systems.tutorial.Tutorial
 import jonahklayton.systems.ui.Hud
 import jonahklayton.systems.world.Level
 import jonahklayton.systems.world.World
@@ -29,7 +31,7 @@ class GameScreen(private val levelNumber: Int) : KtxScreen, KtxInputAdapter {
     }
 
     private lateinit var worldCamera: OrthographicCamera
-    private lateinit var viewport: Viewport
+    private lateinit var viewport: ScalingViewport
     private lateinit var inputMultiplexer: InputMultiplexer
     private lateinit var world: World
 
@@ -73,6 +75,12 @@ class GameScreen(private val levelNumber: Int) : KtxScreen, KtxInputAdapter {
 //        TextRenderer.drawTextCentered(0f, 0f, "HELooolOOOLHfiodh")
 //        TextRenderer.end()
         world.draw(PlantGame.shapeDrawer)
+
+        if (levelNumber == 0) {
+            Tutorial.update(delta)
+            Tutorial.draw(viewport)
+        }
+
         PlantGame.batch.end()
 
         Hud.draw()

@@ -2,6 +2,7 @@ package jonahklayton.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
@@ -29,6 +30,7 @@ class MenuScreen : KtxScreen {
     private lateinit var bgViewport: FillViewport
 
     init {
+        menu.addMenuItem("Tutorial") {ScreenManager.push(GameScreen(0))}
         menu.addMenuItem("Singleplayer") {ScreenManager.push(GameScreen(1))}
         menu.addMenuItem("Settings") {}
         menu.addMenuItem("Exit") {Gdx.app.exit()}
@@ -37,8 +39,9 @@ class MenuScreen : KtxScreen {
     override fun show() {
         worldCamera = OrthographicCamera()
         SoundSystem.camera = worldCamera
+        worldCamera.zoom = 0.5f
         bgViewport = FillViewport(GameScreen.GAME_WIDTH, GameScreen.GAME_HEIGHT, worldCamera)
-        val gen = TerrainGenerator(1)
+        val gen = TerrainGenerator(5)
         gen.octaveSet.addTwisterOctaveFractal(.01, 1.0, .5, .5, 5)
         gen.octaveSet.addOctaveFractal(.005, 1.0, .5, .5, 4)
         val weather = OctaveSet(RandomXS128())
@@ -66,7 +69,18 @@ class MenuScreen : KtxScreen {
         viewport.apply()
 
         PlantGame.batch.begin(camera)
+
+        TextRenderer.begin(PlantGame.batch, viewport, TextRenderer.Font.HEAVY, 125f, 0.05f)
+        TextRenderer.color = Color.WHITE
+        TextRenderer.drawTextCentered(0f, Gdx.graphics.height/2-175f, "PVP:", 10f, 0.75f)
+        TextRenderer.end()
+        TextRenderer.begin(PlantGame.batch, viewport, TextRenderer.Font.HEAVY, 75f, 0.05f)
+        TextRenderer.color = Color.WHITE
+        TextRenderer.drawTextCentered(0f, Gdx.graphics.height/2-275f, "Plant Vs Plant", 4f, 0.75f)
+        TextRenderer.end()
+
         menu.draw(PlantGame.batch, PlantGame.shapeDrawer, viewport)
+
         PlantGame.batch.end()
     }
 

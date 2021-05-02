@@ -101,7 +101,7 @@ class MenuItem {
 
 //        if (m.x >= xo && m.y >= yo && m.x <= xo + width && m.y <= yo + height) {
         shapeDrawer.setColor(0.8f, 0.8f, 0.8f, 1f)
-        CustomShapes.filledRoundedRect(shapeDrawer, xo + MOUSE_OVER_INDENT * progressMapped, yo + MOUSE_OVER_INDENT, width, height, 6f)
+        CustomShapes.filledRoundedRect(shapeDrawer, xo + MOUSE_OVER_INDENT * progressMapped, yo + MOUSE_OVER_INDENT * progressMapped, width, height, 6f)
         TextRenderer.begin(batch, viewport, font, height * .75f, 0.05f)
         TextRenderer.color = Color.WHITE
         TextRenderer.drawTextCentered(xo + (width/2f) + MOUSE_OVER_INDENT * progressMapped, yo + (height/2f) + MOUSE_OVER_INDENT * progressMapped, label, height * (0.04f + progressMapped/32f), .75f)

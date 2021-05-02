@@ -10,6 +10,7 @@ import jonahklayton.systems.light.Light
 import jonahklayton.systems.plant.*
 import jonahklayton.systems.rain.Rain
 import jonahklayton.systems.screen.ScreenManager
+import jonahklayton.systems.tutorial.Tutorial
 import jonahklayton.systems.ui.Hud
 import jonahklayton.systems.world.terrain.Terrain
 import ktx.graphics.center
@@ -45,7 +46,8 @@ class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera
         enemyPlant.placePlant()
 
         if(menu){
-            camera.position.set(enemyPlant.worldPosition.x, enemyPlant.worldPosition.y, 0f)
+            enemyPlant.branchChance = 0.1f
+            camera.position.set(enemyPlant.worldPosition.x-70, enemyPlant.worldPosition.y+50, 0f)
             camera.update()
         }
     }
@@ -77,13 +79,12 @@ class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera
         light.update(dt)
         rain.update(dt)
 
+
         if(!menu) {
             if (playerPlant.isDead()) {
-                ScreenManager.pop()
-                ScreenManager.push(GameOverScreen(level.levelNumber))
+                ScreenManager.switchTo(GameOverScreen(level.levelNumber))
             } else if (enemyPlant.isDead()) {
-                ScreenManager.pop()
-                ScreenManager.push(WinScreen(level.levelNumber))
+                ScreenManager.switchTo(WinScreen(level.levelNumber))
             }
         }
 
