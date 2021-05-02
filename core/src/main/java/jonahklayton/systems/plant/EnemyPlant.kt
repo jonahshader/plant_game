@@ -4,14 +4,14 @@ import com.badlogic.gdx.math.Vector2
 import jonahklayton.systems.world.World
 import kotlin.random.Random
 
-class EnemyPlant(position: Vector2, energy: Float, world: World, APS: Int) : Plant(position, energy, world){
+class EnemyPlant(position: Vector2, energy: Float, world: World, difficulty: Int) : Plant(position, energy, world){
 
     var currentStem: Node = root
     var timeSinceLastAction = 0F
-    var APS = APS
+    var APS = difficulty
     val maxLeaves = Random.nextInt(2, 6)
-    var growthThreshold = 10
-    var branchChance = 0.9f
+    var growthThreshold = 50/difficulty+7
+    var branchChance = 0.9F/difficulty
 
     override fun update(timePassed: Float) {
         super.update(timePassed)
