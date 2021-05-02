@@ -1,12 +1,13 @@
 package jonahklayton.systems.plant
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
 import jonahklayton.systems.world.World
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 
 // growth/existence cost is taken care of here not in the nodes themselves
-open class Plant(position: Vector2, startingEnergy: Float, world: World){
+open class Plant(position: Vector2, startingEnergy: Float, world: World, private val hue: Float){
     private val ENERGY_PER_LENGTH_SUSTAINED = 0.05F
     private val ENERGY_PER_LENGTH_GROWN = 1F
     private val ENERGY_PER_LENGTH_KILLED = 0.9F
@@ -137,7 +138,7 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
 
     open fun draw(renderer: ShapeDrawer, brightness: Float){
         for(i in nodes){
-            i.draw(renderer, brightness)
+            i.draw(renderer, brightness, hue)
         }
     }
 

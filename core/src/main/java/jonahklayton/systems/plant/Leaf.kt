@@ -5,8 +5,8 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 import java.awt.Color
 
 class Leaf(relativeTargetPosition: Vector2, parent: Node, plant: Plant): Node(relativeTargetPosition, parent, plant) {
-    override fun draw(renderer: ShapeDrawer, brightness: Float){
-        renderer.setColor(0f, brightness, 0f, 1f)
-        super.draw(renderer, brightness)
+    override fun draw(renderer: ShapeDrawer, brightness: Float, hue: Float){
+        color.set(0.1f, brightness * .9f, 0.1f, 1f)
+        super.draw(renderer, brightness, hue)
     }
 }

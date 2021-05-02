@@ -11,8 +11,9 @@ import jonahklayton.screens.GameScreen
 import jonahklayton.systems.world.World
 import ktx.app.KtxInputAdapter
 import space.earlygrey.shapedrawer.ShapeDrawer
+import kotlin.math.PI
 
-class PlayerPlant(position: Vector2, energy: Float, world: World, camera: Camera) : Plant(position, energy, world),
+class PlayerPlant(position: Vector2, energy: Float, world: World, camera: Camera) : Plant(position, energy, world, 0f),
     KtxInputAdapter {
     companion object {
         const val MAX_SIZE = 50F
