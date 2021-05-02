@@ -5,11 +5,13 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.*
 import jonahklayton.PlantGame
+import jonahklayton.systems.noise.OctaveSet
 import jonahklayton.systems.ui.Hud
 import jonahklayton.systems.world.Level
 import jonahklayton.systems.world.World
@@ -42,7 +44,9 @@ class GameScreen : KtxScreen, KtxInputAdapter {
         inputMultiplexer = InputMultiplexer()
         Gdx.input.inputProcessor = inputMultiplexer
         inputMultiplexer.addProcessor(this)
-        world = World(Level(Vector2(), Vector2(50f, 0f), gen, 1), inputMultiplexer, worldCamera)
+        val weather = OctaveSet(RandomXS128())
+        weather.addOctaveFractal(0.1, 20.0, .5, .5, 3)
+        world = World(Level(Vector2(), Vector2(50f, 0f), gen, weather, 1), inputMultiplexer, worldCamera)
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
     }
 

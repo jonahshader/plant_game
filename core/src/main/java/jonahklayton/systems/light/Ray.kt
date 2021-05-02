@@ -6,7 +6,7 @@ import jonahklayton.systems.light.Light.Companion.MAX_STARTING_ENERGY
 import jonahklayton.systems.world.World
 import space.earlygrey.shapedrawer.ShapeDrawer
 
-class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var travelDistanceRemaining: Float, private var world: World) {
+class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var travelDistanceRemaining: Float, private val world: World) {
     private val efficiency = .5f
     private val stemReduction = .3f
     private val length = 4f
