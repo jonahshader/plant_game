@@ -12,6 +12,10 @@ import kotlin.math.pow
 
 object SoundSystem {
     var overallVolume = (Settings.settings["overall-volume"] as String).toFloat()
+        set(value) {
+            field = value
+            updateVolume()
+        }
     var soundVolume = (Settings.settings["sound-volume"] as String).toFloat()
     var musicVolume = (Settings.settings["music-volume"] as String).toFloat()
         set(value) {

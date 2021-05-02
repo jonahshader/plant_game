@@ -35,9 +35,9 @@ class Slider : MenuItem {
 
     override fun run(offset: Vector2, dt: Float, viewport: ScalingViewport) {
         val xo = offset.x + x
-        val yo = offset.y + 25
+        val yo = offset.y + y
         val m = mouseWorld(viewport)
-        if (m.x >= xo && m.y >= yo+60 && m.x <= xo + width && m.y <= yo + height) {
+        if (m.x >= xo && m.y >= yo && m.x <= xo + width && m.y <= yo + height) {
             if (Gdx.input.justTouched()) {
                 SoundSystem.playSoundStandalone(Assets.manager.get(Assets.MENU_OPEN_SOUND, Sound::class.java), .8f, 0f)
                 position = (m.x-xo)/width

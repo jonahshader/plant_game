@@ -9,8 +9,8 @@ object Settings {
     val settings = Properties()
 
     init {
-        if(File("../settings.properties").exists()) {
-            settings.load(FileInputStream("../settings.properties"))
+        if(File("settings.properties").exists()) {
+            settings.load(FileInputStream("settings.properties"))
         } else{
             settings["fullscreen"] = "false"
             settings["overall-volume"] = "1.0"
@@ -20,7 +20,7 @@ object Settings {
     }
 
     fun save(){
-        settings.store(FileOutputStream("../settings.properties"), "")
+        settings.store(FileOutputStream("settings.properties"), "")
     }
 
 }
