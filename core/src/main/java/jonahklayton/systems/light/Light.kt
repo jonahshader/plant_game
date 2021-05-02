@@ -13,7 +13,11 @@ import kotlin.math.pow
 class Light(private val world: World) {
     companion object {
         const val MAX_STARTING_ENERGY = 4f
-        fun dayLightRadians(world: World) : Float = (-world.getDayProgress() * 2 * PI + PI).toFloat()
+        fun dayLightRadians(world: World) : Float {
+            val angle = Vector2(1f, 0f).rotateRad((-world.getDayProgress() * 2 * PI + PI).toFloat())
+            angle.y += .33f
+            return angle.angleRad()
+        }
     }
     private val rays = mutableListOf<Ray>()
     private val rand = RandomXS128()
@@ -70,7 +74,7 @@ class Light(private val world: World) {
         updateLightSpawn()
         updateLightSpawnLineLength()
 
-        if (world.getDayProgress() < .5) {
+        if (worldToSunAngle.y > 0) {
             val lightLinePerpendicular = Vector2(worldToSunAngle).scl(spawnLineLength)
             lightSpawnPosLineCenter.set(lightSpawnPosCenter)
             lightSpawnPosLineCenter.add(lightLinePerpendicular)

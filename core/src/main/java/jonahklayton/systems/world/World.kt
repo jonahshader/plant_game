@@ -10,6 +10,7 @@ import jonahklayton.systems.light.Light
 import jonahklayton.systems.plant.*
 import jonahklayton.systems.rain.Rain
 import jonahklayton.systems.screen.ScreenManager
+import jonahklayton.systems.tutorial.Tutorial
 import jonahklayton.systems.ui.Hud
 import jonahklayton.systems.world.terrain.Terrain
 import space.earlygrey.shapedrawer.ShapeDrawer
@@ -62,11 +63,9 @@ class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera
         rain.update(dt)
 
         if (playerPlant.isDead()) {
-            ScreenManager.pop()
-            ScreenManager.push(GameOverScreen(level.levelNumber))
+            ScreenManager.switchTo(GameOverScreen(level.levelNumber))
         } else if (enemyPlant.isDead()) {
-            ScreenManager.pop()
-            ScreenManager.push(WinScreen(level.levelNumber))
+            ScreenManager.switchTo(WinScreen(level.levelNumber))
         }
 
         time += dt

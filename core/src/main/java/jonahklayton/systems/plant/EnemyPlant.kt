@@ -9,10 +9,10 @@ class EnemyPlant(position: Vector2, energy: Float, world: World, difficulty: Int
 
     var currentStem: Node = root
     var timeSinceLastAction = 0F
-    var APS = difficulty
+    var APS = (difficulty*.75) + .75f
     val maxLeaves = Random.nextInt(2, 6)
-    var growthThreshold = 50/difficulty+7
-    var branchChance = 0.9F/difficulty
+    var growthThreshold = (100/(difficulty+1))+7
+    var branchChance = (1.9F)/(difficulty+1)
 
     override fun update(timePassed: Float) {
         super.update(timePassed)
