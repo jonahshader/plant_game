@@ -8,6 +8,7 @@ import jonahklayton.screens.GameOverScreen
 import jonahklayton.screens.WinScreen
 import jonahklayton.systems.light.Light
 import jonahklayton.systems.plant.*
+import jonahklayton.systems.rain.Rain
 import jonahklayton.systems.screen.ScreenManager
 import jonahklayton.systems.ui.Hud
 import jonahklayton.systems.world.terrain.Terrain
@@ -19,6 +20,7 @@ class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera
     private val enemyPlant = EnemyPlant(level.enemyPos, 150F, this, 1)
 
     private val light = Light(this)
+    private val rain = Rain(this, level.weather)
 
     private val dayLength = 60f
 
@@ -57,6 +59,7 @@ class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera
         playerPlant.update(dt)
         enemyPlant.update(dt)
         light.update(dt)
+        rain.update(dt)
 
         if (playerPlant.isDead()) {
             ScreenManager.pop()
@@ -74,6 +77,7 @@ class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera
         playerPlant.draw(renderer, getSkyBrightness())
         enemyPlant.draw(renderer, getSkyBrightness())
         light.draw(renderer)
+        rain.draw(getSkyBrightness())
     }
 
     fun getDay() : Int = (time / dayLength).toInt()

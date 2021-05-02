@@ -10,15 +10,15 @@ class EnemyPlant(position: Vector2, energy: Float, world: World, APS: Int) : Pla
     var timeSinceLastAction = 0F
     var APS = APS
     val maxLeaves = Random.nextInt(2, 6)
-    var growthThreshold = 25
-    var branchChance = 0.75f
+    var growthThreshold = 10
+    var branchChance = 0.9f
 
     override fun update(timePassed: Float) {
         super.update(timePassed)
 
         timeSinceLastAction += timePassed
 
-        if(world.getDayProgress() < 0.4
+        if(world.getDayProgress() < 0.5
             && getGrowingNodes().isEmpty()
             && storedEnergy() > growthThreshold
             && timeSinceLastAction*APS >= 1){

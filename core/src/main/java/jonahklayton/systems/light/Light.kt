@@ -1,5 +1,7 @@
 package jonahklayton.systems.light
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.MathUtils.sin
 import com.badlogic.gdx.math.RandomXS128
 import com.badlogic.gdx.math.Vector2
@@ -22,6 +24,8 @@ class Light(private val world: World) {
 
     private var raysPerLengthPerSecond = 2.5f
     private var spawnQueue = 0f
+
+    private var renderingEnabled = false
 
     private fun dayLightRadians() : Float = (-world.getDayProgress() * 2 * PI + PI).toFloat()
 
@@ -82,12 +86,15 @@ class Light(private val world: World) {
             }
         }
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) renderingEnabled = !renderingEnabled
+
         // run rays
         rays.forEach {it.update()}
         rays.removeIf{it.queueRemoval}
     }
 
     fun draw(shapeDrawer: ShapeDrawer) {
-        rays.forEach{it.draw(shapeDrawer)}
+        if (renderingEnabled)
+            rays.forEach{it.draw(shapeDrawer)}
     }
 }
