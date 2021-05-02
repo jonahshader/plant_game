@@ -1,6 +1,5 @@
 package jonahklayton.systems.world.terrain
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 
 class TerrainChunk(val xChunk: Int, val yChunk: Int, private val generator: TerrainGenerator, terrain: Terrain) {
@@ -24,8 +23,8 @@ class TerrainChunk(val xChunk: Int, val yChunk: Int, private val generator: Terr
 
     fun getCell(xCell: Int, yCell: Int) : TerrainCell? = cells[cellPosToIndex(xCell, yCell)]
 
-    fun draw(batch: SpriteBatch) {
-        cells.forEach { it?.draw() }
+    fun draw(brightness: Float) {
+        cells.forEach { it?.draw(brightness) }
     }
 
     fun update(dt: Float) {

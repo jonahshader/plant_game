@@ -26,9 +26,9 @@ class Root(relativeTargetPosition: Vector2, parent: Node?, plant: Plant, storedE
         } else 0f
     }
 
-    override fun draw(renderer: ShapeDrawer){
-        renderer.setColor(0.5f, 0.4f, 0f, 1f)
-        super.draw(renderer)
+    override fun draw(renderer: ShapeDrawer, brightness: Float){
+        renderer.setColor(0.5f * brightness, 0.4f * brightness, 0f * brightness, 1f)
+        super.draw(renderer, brightness)
     }
 
     override fun update(timePassed: Float){

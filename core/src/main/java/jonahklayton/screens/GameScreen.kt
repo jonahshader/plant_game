@@ -42,7 +42,7 @@ class GameScreen : KtxScreen, KtxInputAdapter {
         inputMultiplexer = InputMultiplexer()
         Gdx.input.inputProcessor = inputMultiplexer
         inputMultiplexer.addProcessor(this)
-        world = World(Level(Vector2(), Vector2(50f, 0f), gen), inputMultiplexer, worldCamera)
+        world = World(Level(Vector2(), Vector2(50f, 0f), gen, 1), inputMultiplexer, worldCamera)
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
     }
 
@@ -58,7 +58,8 @@ class GameScreen : KtxScreen, KtxInputAdapter {
         // run stuff
         world.update(delta)
 
-        ScreenUtils.clear(.2f, .5f, 1f, 1f)
+        val brightness = world.getSkyBrightness()
+        ScreenUtils.clear(.2f * brightness, .5f * brightness, 1f * brightness, 1f)
         viewport.apply()
         PlantGame.batch.begin(worldCamera)
 //        TextRenderer.begin(PlantGame.batch, viewport, TextRenderer.Font.NORMAL, 32f, 0f)

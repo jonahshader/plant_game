@@ -27,7 +27,7 @@ class PlayerPlant(position: Vector2, energy: Float, world: World, camera: Camera
 
     }
 
-    override fun draw(renderer: ShapeDrawer) {
+    override fun draw(renderer: ShapeDrawer, brightness: Float) {
         if (selectedNode != null) {
             renderer.setColor(0.5f, 0.5f, 0.5f, 0.5f)
             var relPos = mouseToWorldVec(Vector2(Gdx.input.x.toFloat(), Gdx.input.y.toFloat())).sub(selectedNode!!.worldPosition)
@@ -39,7 +39,7 @@ class PlayerPlant(position: Vector2, energy: Float, world: World, camera: Camera
             )
         }
 
-        super.draw(renderer)
+        super.draw(renderer, brightness)
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {

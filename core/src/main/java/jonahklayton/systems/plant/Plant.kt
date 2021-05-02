@@ -134,9 +134,9 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
         manageLists()
     }
 
-    open fun draw(renderer: ShapeDrawer){
+    open fun draw(renderer: ShapeDrawer, brightness: Float){
         for(i in nodes){
-            i.draw(renderer)
+            i.draw(renderer, brightness)
         }
     }
 
@@ -199,4 +199,6 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
     fun currentBottleneck(): String {
         return bottleneck
     }
+
+    fun isDead() : Boolean = root.children.isEmpty()
 }
