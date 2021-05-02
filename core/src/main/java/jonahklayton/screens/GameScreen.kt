@@ -43,6 +43,7 @@ class GameScreen : KtxScreen, KtxInputAdapter {
         gen.octaveSet.addOctaveFractal(.005, 1.0, .5, .5, 4)
         inputMultiplexer = InputMultiplexer()
         Gdx.input.inputProcessor = inputMultiplexer
+        world = World(Level(Vector2(), Vector2(250f, 13f), gen, 1), inputMultiplexer, worldCamera)
         inputMultiplexer.addProcessor(this)
         val weather = OctaveSet(RandomXS128())
         weather.addOctaveFractal(0.1, 20.0, .5, .5, 3)

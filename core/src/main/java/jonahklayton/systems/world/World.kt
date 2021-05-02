@@ -17,7 +17,7 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera: Camera) {
     val terrain = Terrain(this, level.generator)
     private val playerPlant = PlayerPlant(level.playerPos, 100F, this, camera)
-    private val enemyPlant = Plant(level.enemyPos, 100F, this)
+    private val enemyPlant = EnemyPlant(level.enemyPos, 150F, this, 1)
 
     private val light = Light(this)
     private val rain = Rain(this, level.weather)
@@ -82,6 +82,7 @@ class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera
 
     fun getDay() : Int = (time / dayLength).toInt()
     fun getDayProgress() : Float = (time / dayLength).toFloat() - getDay()
+    fun getIsMorning() : Boolean = getDayProgress() < 0.25F
     fun getSkyBrightness() : Float = sin(getDayProgress() * 2* PI) * .4f + .6f
 
 }

@@ -78,19 +78,19 @@ class PlayerPlant(position: Vector2, energy: Float, world: World, camera: Camera
                     var child = Root(relPos, selectedNode!!, selectedNode!!.plant, 0F, world.terrain)
                     selectedNode!!.addChild(child)
                     selectedNode!!.plant.addRoot(child)
-                    print("root")
+//                    print("root")
                 }
                 button == Input.Buttons.LEFT -> {
                     var child = Stem(relPos, selectedNode!!, selectedNode!!.plant)
                     selectedNode!!.addChild(child)
                     selectedNode!!.plant.addStem(child)
-                    print("stem")
+//                    print("stem")
                 }
                 button == Input.Buttons.RIGHT -> {
                     var child = Leaf(relPos, selectedNode!!, selectedNode!!.plant)
                     selectedNode!!.addChild(child)
                     selectedNode!!.plant.addLeaf(child)
-                    print("leaf")
+//                    print("leaf")
                 }
 
             }
