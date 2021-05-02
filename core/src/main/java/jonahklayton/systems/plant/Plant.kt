@@ -1,20 +1,19 @@
 package jonahklayton.systems.plant
 
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
 import jonahklayton.systems.world.World
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 
 // growth/existence cost is taken care of here not in the nodes themselves
-open class Plant(position: Vector2, startingEnergy: Float, world: World, private val hue: Float){
+open class Plant(xPosition: Float, startingEnergy: Float, world: World, private val hue: Float){
     private val ENERGY_PER_LENGTH_SUSTAINED = 0.05F
     private val ENERGY_PER_LENGTH_GROWN = 1F
     private val ENERGY_PER_LENGTH_KILLED = 0.9F
     private val STORE_RATIO_FOR_GROW = 0.05F
     private val WATER_PER_LIGHT = .1f
 
-    var worldPosition = position.cpy()
+    var worldPosition = Vector2(xPosition, 300f)
         private set
 
     var world = world
@@ -47,6 +46,10 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World, private
         root.addChild(child)
 
         addRoot(child)
+    }
+
+    fun placePlant(){
+        while(!world.terrain.isUnderground(worldPosition)) worldPosition.sub(0f, -0.5f)
     }
 
     //call to get energy from somewhere in the plant, returns the amount of energy gotten
