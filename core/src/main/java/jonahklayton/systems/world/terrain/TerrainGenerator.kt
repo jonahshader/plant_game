@@ -20,7 +20,8 @@ class TerrainGenerator(seed: Long) {
     }
 
     private fun cellPosToValue(xCell: Int, yCell: Int) : Float {
-        return (octaveSet.getValue(xCell * TerrainCell.SIZE, yCell * TerrainCell.SIZE) + yCell * TerrainCell.SIZE * gradient).toFloat()
+        val unmodded = (octaveSet.getValue(xCell * TerrainCell.SIZE, yCell * TerrainCell.SIZE) + yCell * TerrainCell.SIZE * gradient).toFloat()
+        return unmodded + (rand.nextFloat() - 0.5f) * unmodded
     }
 
     private fun mapValueToTile(value: Float) : TerrainCell.TerrainType? {

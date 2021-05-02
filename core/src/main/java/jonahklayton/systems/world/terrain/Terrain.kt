@@ -8,7 +8,8 @@ class Terrain(private val world: World, private val generator: TerrainGenerator)
     companion object {
         const val LOAD_CHUNK_RADIUS = 1
     }
-
+//    private val tempDir
+    private val tempCellsWithWater = mutableListOf<TerrainCell>()
     private val keyToChunk = HashMap<String, TerrainChunk>()
 
     // hopefully this returns null if there isn't a cell there. idk if the '?' operator works like that
@@ -55,5 +56,13 @@ class Terrain(private val world: World, private val generator: TerrainGenerator)
         keyToChunk.values.removeIf{it.queueRemoved}
     }
 
-    fun isUnderground(worldPos: Vector2) : Boolean = getCellFromWorldPos(worldPos) != null
+    fun isInLoadedChunk(worldPos: Vector2) : Boolean = keyToChunk.containsKey(TerrainChunk.worldPosToKey(worldPos))
+
+    fun isUnderground(worldPos: Vector2) : Boolean = isInLoadedChunk(worldPos) && getCellFromWorldPos(worldPos) != null
+
+    fun takeWater(amount: Float, startPos: Vector2, endPos: Vector2) {
+        // build list of tiles
+        tempCellsWithWater.clear()
+
+    }
 }

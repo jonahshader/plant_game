@@ -170,4 +170,24 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
         leaves.removeIf {x->x.isDead}
         nodes.removeIf {x->x.isDead}
     }
+
+    fun storedEnergy(): Float{
+        var storedEnergy = 0F
+
+        for(i in roots){
+            storedEnergy += i.storedEnergy
+        }
+
+        return storedEnergy
+    }
+
+    fun storedEnergyCapacity(): Float{
+        var storedEnergyCapacity = 0F
+
+        for(i in roots){
+            storedEnergyCapacity += i.getMaxStoredEnergy()
+        }
+
+        return storedEnergyCapacity
+    }
 }
