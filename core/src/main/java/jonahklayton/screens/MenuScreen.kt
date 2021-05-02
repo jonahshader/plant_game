@@ -18,13 +18,16 @@ class MenuScreen : KtxScreen {
     private val camera = OrthographicCamera()
     private val viewport = FitViewport(640f, 900f, camera)
     private val menu = Menu(TextRenderer.Font.HEAVY, camera, Vector2(), Vector2(500f, 90f))
+    init {
+        menu.addMenuItem("Singleplayer") {ScreenManager.push(GameScreen())}
+        menu.addMenuItem("Settings") {}
+        menu.addMenuItem("Exit") {Gdx.app.exit()}
+    }
 
     override fun show() {
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
 
-        menu.addMenuItem("Singleplayer") {ScreenManager.push(GameScreen())}
-        menu.addMenuItem("Settings") {}
-        menu.addMenuItem("Exit") {Gdx.app.exit()}
+
     }
 
     override fun render(delta: Float) {

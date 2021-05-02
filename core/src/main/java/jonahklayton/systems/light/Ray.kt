@@ -2,6 +2,7 @@ package jonahklayton.systems.light
 
 import com.badlogic.gdx.math.Vector2
 import external.isIntersecting
+import jonahklayton.systems.light.Light.Companion.MAX_STARTING_ENERGY
 import jonahklayton.systems.world.World
 import space.earlygrey.shapedrawer.ShapeDrawer
 
@@ -53,7 +54,7 @@ class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var trave
     }
 
     fun draw(shapeDrawer: ShapeDrawer) {
-        shapeDrawer.setColor(1f, 1f, 0f, .75f * energy)
+        shapeDrawer.setColor(1f, 1f, 0f, .75f * energy / MAX_STARTING_ENERGY)
         shapeDrawer.line(pos, tipPos)
     }
 }

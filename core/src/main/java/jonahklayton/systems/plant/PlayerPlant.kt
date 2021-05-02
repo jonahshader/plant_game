@@ -16,7 +16,7 @@ class PlayerPlant(position: Vector2, energy: Float, world: World, camera: Camera
     KtxInputAdapter {
 
     private val MAX_SIZE = 50F
-    private val CLICK_DISTANCE = 3F
+    private val CLICK_DISTANCE = 5F
 
     var selectedNode: Node? = null
 
