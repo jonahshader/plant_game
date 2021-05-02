@@ -20,6 +20,17 @@ class Menu(private val font: TextRenderer.Font, private val camera: Camera, priv
         items.add(newItem)
     }
 
+    fun addSliderItem(label: String, initialPos: Float, action: (i: Float) -> Unit) {
+        val newItem: MenuItem = if (items.size == 0) {
+            //Call first menu item constructor
+            Slider(action, 0f, 0f, menuItemSize.x, menuItemSize.y, label, font, camera, initialPos)
+        } else {
+            //Call other items constructor
+            Slider(action, label, items[items.size - 1], font, camera, initialPos)
+        }
+        items.add(newItem)
+    }
+
     fun draw(batch: SpriteBatch, shapeDrawer: ShapeDrawer, viewport: ScalingViewport) {
         for (item in items) item.draw(batch, shapeDrawer, viewport, position)
     }

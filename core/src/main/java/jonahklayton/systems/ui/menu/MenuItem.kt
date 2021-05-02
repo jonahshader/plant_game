@@ -19,20 +19,20 @@ import jonahklayton.systems.ui.TextRenderer
 import space.earlygrey.shapedrawer.ShapeDrawer
 import kotlin.math.pow
 
-class MenuItem {
+open class MenuItem {
     private val MENU_PADDING = 25
-    private var action: () -> Unit
-    private var x: Float
-    private var y: Float
-    private var width: Float
-    private var height: Float
-    private val MOUSE_OVER_INDENT = 5
-    private var label: String
-    private var font: TextRenderer.Font
+    internal var action: () -> Unit
+    internal var x: Float
+    internal var y: Float
+    internal var width: Float
+    internal var height: Float
+    internal val MOUSE_OVER_INDENT = 5
+    internal var label: String
+    internal var font: TextRenderer.Font
     private var camera: Camera
-    private var mouseOver = false
-    private val progressPerSecond = 15
-    private var progress = 0f
+    internal var mouseOver = false
+    internal val progressPerSecond = 15
+    internal var progress = 0f
 
     // constructor for first menu item
     constructor(
@@ -67,7 +67,7 @@ class MenuItem {
         height = previousMenuItem.height
     }
 
-    fun run(offset: Vector2, dt: Float) {
+    open fun run(offset: Vector2, dt: Float) {
         val xo = offset.x + x
         val yo = offset.y + y
         val m = mouseWorld
@@ -90,7 +90,7 @@ class MenuItem {
         progress = progress.coerceIn(0f, 1f)
     }
 
-    fun draw(batch: SpriteBatch, shapeDrawer: ShapeDrawer, viewport: ScalingViewport, offset: Vector2) {
+    open fun draw(batch: SpriteBatch, shapeDrawer: ShapeDrawer, viewport: ScalingViewport, offset: Vector2) {
         val xo = offset.x + x
         val yo = offset.y + y
 //        val m = mouseWorld
@@ -116,8 +116,8 @@ class MenuItem {
 //        }
     }
 
-    private val mouseWorld: Vector2
-        private get() {
+    internal val mouseWorld: Vector2
+        internal get() {
             val mouseWorld = camera.unproject(Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
             return Vector2(mouseWorld.x, mouseWorld.y)
         }
