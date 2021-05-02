@@ -22,7 +22,7 @@ import ktx.app.KtxScreen
 import ktx.graphics.begin
 import kotlin.math.pow
 
-class GameScreen(levelNumber: Int) : KtxScreen, KtxInputAdapter {
+class GameScreen(private val levelNumber: Int) : KtxScreen, KtxInputAdapter {
     companion object {
         const val GAME_WIDTH = 640f
         const val GAME_HEIGHT = 360f
@@ -48,7 +48,7 @@ class GameScreen(levelNumber: Int) : KtxScreen, KtxInputAdapter {
         inputMultiplexer.addProcessor(this)
         val weather = OctaveSet(RandomXS128())
         weather.addOctaveFractal(0.1, 20.0, .5, .5, 3)
-        world = World(Level(Vector2(), Vector2(250f, 13f), gen, weather, 1), inputMultiplexer, worldCamera)
+        world = World(Level(Vector2(), Vector2(250f, 13f), gen, weather, levelNumber), inputMultiplexer, worldCamera)
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
     }
 
