@@ -5,7 +5,7 @@ import jonahklayton.systems.world.World
 import kotlin.math.PI
 import kotlin.random.Random
 
-class EnemyPlant(position: Vector2, energy: Float, world: World, difficulty: Int) : Plant(position, energy, world, PI.toFloat()){
+class EnemyPlant(xPosition: Float, energy: Float, world: World, difficulty: Int) : Plant(xPosition, energy, world, PI.toFloat()){
 
     var currentStem: Node = root
     var timeSinceLastAction = 0F
@@ -86,7 +86,7 @@ class EnemyPlant(position: Vector2, energy: Float, world: World, difficulty: Int
             moveDist += 5
             pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
                 .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg() + lr)
-                .scl(Random.nextFloat()*5+5f))
+                .scl(Random.nextFloat()*(if(moveDist>180) 20 else 5)+5f))
         }
 
         pos.sub(parent.worldPosition)
@@ -117,7 +117,7 @@ class EnemyPlant(position: Vector2, energy: Float, world: World, difficulty: Int
             moveDist += 5
             pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
                 .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg() + lr)
-                .scl(Random.nextFloat()*20+25f))
+                .scl(Random.nextFloat()*20+20f))
         }
 
         pos.sub(parent.worldPosition)

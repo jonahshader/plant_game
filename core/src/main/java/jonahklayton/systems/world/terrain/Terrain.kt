@@ -6,7 +6,7 @@ import jonahklayton.systems.world.World
 
 class Terrain(private val world: World, private val generator: TerrainGenerator) {
     companion object {
-        const val LOAD_CHUNK_RADIUS = 1
+        const val LOAD_CHUNK_RADIUS = 2
     }
 
     // variables for water absorption algo

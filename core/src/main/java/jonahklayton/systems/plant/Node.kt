@@ -8,6 +8,7 @@ import jonahklayton.systems.assets.Assets.DONE_GROWING_SOUND
 import jonahklayton.systems.assets.Assets.LIMB_GROW_SOUND
 import jonahklayton.systems.sound.SoundSystem
 import space.earlygrey.shapedrawer.ShapeDrawer
+import java.lang.Math.abs
 import kotlin.math.pow
 
 open class Node(relativeTargetPosition: Vector2, parent: Node?, var plant: Plant){
@@ -107,7 +108,7 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, var plant: Plant
 
         relativePosition = Vector2(relativePosition).add(Vector2(relativeTargetPosition).scl(percent/100))
 
-        if (Vector2(relativePosition).dot(oldPos) < 0) die()
+        if (abs(relativePosition.angleDeg() - oldPos.angleDeg()) > 10) die()
     }
 
     fun isFullyGrown(): Boolean {

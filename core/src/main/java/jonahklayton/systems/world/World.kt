@@ -13,9 +13,10 @@ import jonahklayton.systems.screen.ScreenManager
 import jonahklayton.systems.tutorial.Tutorial
 import jonahklayton.systems.ui.Hud
 import jonahklayton.systems.world.terrain.Terrain
+import ktx.graphics.center
 import space.earlygrey.shapedrawer.ShapeDrawer
 
-class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera: Camera) {
+class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera: Camera, menu: Boolean = false) {
     val terrain = Terrain(this, level.generator)
     private val playerPlant = PlayerPlant(level.playerPos, 100F + if(level.levelNumber==0) 900f else 0f, this, camera)
     private val enemyPlant = EnemyPlant(level.enemyPos, 150F + (level.levelNumber-1) * 20, this, level.levelNumber)
@@ -25,47 +26,66 @@ class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera
 
     private val dayLength = 60f
 
+    private val menu = menu
+    private val camera = camera
+
     var time = 0.0
         private set
 
     init {
         // register player plant as an input processor
-        inputMultiplexer.addProcessor(playerPlant)
+        if(!menu) {
+            inputMultiplexer.addProcessor(playerPlant)
 
-        Hud.plant = playerPlant
+            Hud.plant = playerPlant
+
+            playerPlant.placePlant()
+
+            playerPlant.centerCamera()
+        }
+        enemyPlant.placePlant()
+
+        if(menu){
+            enemyPlant.branchChance = 0.1f
+            camera.position.set(enemyPlant.worldPosition.x-70, enemyPlant.worldPosition.y+50, 0f)
+            camera.update()
+        }
     }
 
     fun getAllNodes() : MutableList<Node> {
         val nodes = mutableListOf<Node>()
-        nodes += playerPlant.nodes
+        if(!menu) nodes += playerPlant.nodes
         nodes += enemyPlant.nodes
         return nodes
     }
 
     fun getAllLeaves() : MutableList<Leaf> {
         val leaves = mutableListOf<Leaf>()
-        leaves += playerPlant.leaves
+        if(!menu) leaves += playerPlant.leaves
         leaves += enemyPlant.leaves
         return leaves
     }
     fun getAllStems(): MutableList<Stem> {
         val stems = mutableListOf<Stem>()
-        stems += playerPlant.stems
+        if(!menu) stems += playerPlant.stems
         stems += enemyPlant.stems
         return stems
     }
 
     fun update(dt: Float) {
         terrain.update(dt)
-        playerPlant.update(dt)
+        if(!menu) playerPlant.update(dt)
         enemyPlant.update(dt)
         light.update(dt)
         rain.update(dt)
 
-        if (playerPlant.isDead()) {
-            ScreenManager.switchTo(GameOverScreen(level.levelNumber))
-        } else if (enemyPlant.isDead()) {
-            ScreenManager.switchTo(WinScreen(level.levelNumber))
+
+        if(!menu) {
+            if (playerPlant.isDead()) {
+                ScreenManager.switchTo(GameOverScreen(level.levelNumber))
+            } else if (enemyPlant.isDead()) {
+                ScreenManager.switchTo(WinScreen(level.levelNumber))
+            }
         }
 
         time += dt
@@ -75,8 +95,8 @@ class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera
 //        playerPlant.drawShadows(renderer, getSkyBrightness())
 //        enemyPlant.drawShadows(renderer, getSkyBrightness())
         terrain.draw(getSkyBrightness())
-        playerPlant.draw(renderer, getSkyBrightness())
         enemyPlant.draw(renderer, getSkyBrightness())
+        if(!menu) playerPlant.draw(renderer, getSkyBrightness())
         light.draw(renderer)
         rain.draw(getSkyBrightness())
     }

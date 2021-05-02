@@ -3,28 +3,34 @@ package jonahklayton.systems.plant
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Camera
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
-import com.badlogic.gdx.utils.viewport.Viewport
-import jonahklayton.screens.GameScreen
 import jonahklayton.systems.world.World
 import ktx.app.KtxInputAdapter
 import space.earlygrey.shapedrawer.ShapeDrawer
-import kotlin.math.PI
 
-class PlayerPlant(position: Vector2, energy: Float, world: World, camera: Camera) : Plant(position, energy, world, 0f),
+class PlayerPlant(xPosition: Float, energy: Float, world: World, camera: Camera) : Plant(xPosition, energy, world, 0f),
     KtxInputAdapter {
     companion object {
         const val MAX_SIZE = 50F
     }
 
 
-    private val CLICK_DISTANCE = 5F
+    private val CLICK_DISTANCE = 7F
 
     var selectedNode: Node? = null
 
     var camera = camera
+
+    fun centerCamera(){
+        camera.position.set(worldPosition.x, worldPosition.y, 0f)
+        camera.update()
+    }
+
+    override fun update(timePassed: Float) {
+        super.update(timePassed)
+
+    }
 
     override fun draw(renderer: ShapeDrawer, brightness: Float) {
         if (selectedNode != null) {
@@ -73,7 +79,7 @@ class PlayerPlant(position: Vector2, energy: Float, world: World, camera: Camera
             }
 
             if (relPos.len() > CLICK_DISTANCE) when {
-                selectedNode!!.plant.world.terrain.isUnderground(worldPos) -> {
+                selectedNode!!.plant.world.terrain.isUnderground(selectedNode!!.worldPosition.cpy().add(relPos)) -> {
                     var child = Root(relPos, selectedNode!!, selectedNode!!.plant, 0F, world.terrain)
                     selectedNode!!.addChild(child)
                     selectedNode!!.plant.addRoot(child)
