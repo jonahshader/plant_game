@@ -32,6 +32,8 @@ object Assets : Disposable {
     const val MENU_OPEN_SOUND = "audio/sounds/open.ogg"
     const val MENU_CLOSE_SOUND = "audio/sounds/close.ogg"
     const val MENU_MOUSE_OVER_SOUND = "audio/sounds/menu_mouseover.ogg"
+    const val DONE_GROWING_SOUND = "audio/sounds/done_growing.ogg"
+    const val LIMB_GROW_SOUND = "audio/sounds/limb_grow.ogg"
 
 
     // Sprites
@@ -90,6 +92,8 @@ object Assets : Disposable {
         manager.load(MENU_OPEN_SOUND, Sound::class.java)
         manager.load(MENU_CLOSE_SOUND, Sound::class.java)
         manager.load(MENU_MOUSE_OVER_SOUND, Sound::class.java)
+        manager.load(DONE_GROWING_SOUND, Sound::class.java)
+        manager.load(LIMB_GROW_SOUND, Sound::class.java)
     }
 
     override fun dispose() {

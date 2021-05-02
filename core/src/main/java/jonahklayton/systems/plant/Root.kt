@@ -33,6 +33,7 @@ class Root(relativeTargetPosition: Vector2, parent: Node?, plant: Plant, storedE
 
     override fun update(timePassed: Float){
         waterLeftInTick = getAbsorptionRate()*timePassed
+        super.update(timePassed)
     }
 
     fun thicken(){

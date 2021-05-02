@@ -19,7 +19,7 @@ class MenuScreen : KtxScreen {
     private val viewport = FitViewport(640f, 900f, camera)
     private val menu = Menu(TextRenderer.Font.HEAVY, camera, Vector2(), Vector2(500f, 90f))
     init {
-        menu.addMenuItem("Singleplayer") {ScreenManager.push(GameScreen())}
+        menu.addMenuItem("Singleplayer") {ScreenManager.push(GameScreen(1))}
         menu.addMenuItem("Settings") {}
         menu.addMenuItem("Exit") {Gdx.app.exit()}
     }

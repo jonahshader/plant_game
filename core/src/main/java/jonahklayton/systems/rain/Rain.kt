@@ -7,6 +7,7 @@ import jonahklayton.systems.world.World
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 class Rain(private val world: World, private val weather: OctaveSet) {
+    private val waterPerDrop = .2f
     private val drops = mutableListOf<RainDrop>()
     private val rand = RandomXS128()
 
@@ -25,7 +26,7 @@ class Rain(private val world: World, private val weather: OctaveSet) {
         updateSpawn()
 
         for (i in 0 until toSpawn) {
-            drops += RainDrop(Vector2(0f, -1f), Vector2(spawnCenter).add((rand.nextFloat() - .5f) * spawnLineLength, spawnLineLength * 2), world, .5f, spawnLineLength * 6f)
+            drops += RainDrop(Vector2(0f, -1f), Vector2(spawnCenter).add((rand.nextFloat() - .5f) * spawnLineLength, spawnLineLength * 2), world, waterPerDrop, spawnLineLength * 6f)
         }
 
         drops.forEach {it.update(dt)}

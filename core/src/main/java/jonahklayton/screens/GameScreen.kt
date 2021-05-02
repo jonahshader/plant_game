@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.*
 import jonahklayton.PlantGame
 import jonahklayton.systems.noise.OctaveSet
+import jonahklayton.systems.sound.SoundSystem
 import jonahklayton.systems.ui.Hud
 import jonahklayton.systems.world.Level
 import jonahklayton.systems.world.World
@@ -21,7 +22,7 @@ import ktx.app.KtxScreen
 import ktx.graphics.begin
 import kotlin.math.pow
 
-class GameScreen : KtxScreen, KtxInputAdapter {
+class GameScreen(levelNumber: Int) : KtxScreen, KtxInputAdapter {
     companion object {
         const val GAME_WIDTH = 640f
         const val GAME_HEIGHT = 360f
@@ -37,17 +38,17 @@ class GameScreen : KtxScreen, KtxInputAdapter {
 
     override fun show() {
         worldCamera = OrthographicCamera()
+        SoundSystem.camera = worldCamera
         viewport = FillViewport(GAME_WIDTH, GAME_HEIGHT, worldCamera)
         val gen = TerrainGenerator(151253)
         gen.octaveSet.addTwisterOctaveFractal(.01, 1.0, .5, .5, 5)
         gen.octaveSet.addOctaveFractal(.005, 1.0, .5, .5, 4)
         inputMultiplexer = InputMultiplexer()
         Gdx.input.inputProcessor = inputMultiplexer
-        world = World(Level(Vector2(), Vector2(250f, 13f), gen, 1), inputMultiplexer, worldCamera)
         inputMultiplexer.addProcessor(this)
         val weather = OctaveSet(RandomXS128())
         weather.addOctaveFractal(0.1, 20.0, .5, .5, 3)
-        world = World(Level(Vector2(), Vector2(50f, 0f), gen, weather, 1), inputMultiplexer, worldCamera)
+        world = World(Level(Vector2(), Vector2(250f, 13f), gen, weather, 1), inputMultiplexer, worldCamera)
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
     }
 

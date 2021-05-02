@@ -14,8 +14,11 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 
 class PlayerPlant(position: Vector2, energy: Float, world: World, camera: Camera) : Plant(position, energy, world),
     KtxInputAdapter {
+    companion object {
+        const val MAX_SIZE = 50F
+    }
 
-    private val MAX_SIZE = 50F
+
     private val CLICK_DISTANCE = 5F
 
     var selectedNode: Node? = null

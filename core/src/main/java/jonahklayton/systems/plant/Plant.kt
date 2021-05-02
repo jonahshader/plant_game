@@ -1,6 +1,5 @@
 package jonahklayton.systems.plant
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import jonahklayton.systems.world.World
 import space.earlygrey.shapedrawer.ShapeDrawer

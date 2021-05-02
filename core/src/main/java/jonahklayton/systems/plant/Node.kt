@@ -1,7 +1,12 @@
 package jonahklayton.systems.plant
 
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
+import jonahklayton.systems.assets.Assets
+import jonahklayton.systems.assets.Assets.DONE_GROWING_SOUND
+import jonahklayton.systems.assets.Assets.LIMB_GROW_SOUND
+import jonahklayton.systems.sound.SoundSystem
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 open class Node(relativeTargetPosition: Vector2, parent: Node?, var plant: Plant){
@@ -26,8 +31,23 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, var plant: Plant
 
     var thickness = 3F
 
-    open fun update(timePassed: Float){
+    private var soundPlayed = false
+    private val doneGrowingSound: Sound = Assets.manager.get(DONE_GROWING_SOUND)
+    private val growSound: Sound = Assets.manager.get(LIMB_GROW_SOUND)
+    private val growSoundId = SoundSystem.playSoundInWorld(growSound, worldPosition, .5f, .5f)
 
+    init {
+        growSound.setLooping(growSoundId, true)
+    }
+
+    open fun update(timePassed: Float){
+        if (!soundPlayed && isFullyGrown()) {
+            soundPlayed = true
+            SoundSystem.playSoundInWorld(doneGrowingSound, worldPosition, .8f, 2-(1.5f*targetLength/PlayerPlant.MAX_SIZE))
+            growSound.stop()
+        } else {
+            growSound.setPitch(growSoundId, .5f + (getLength() / targetLength) * 2/1.5f)
+        }
     }
 
     open fun draw(renderer: ShapeDrawer, brightness: Float){
@@ -69,7 +89,7 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, var plant: Plant
     }
 
     fun isFullyGrown(): Boolean {
-        return relativePosition.len() >= relativeTargetPosition.len()
+        return relativePosition.len2() >= relativeTargetPosition.len2()
     }
 
     fun getLength(): Float {
