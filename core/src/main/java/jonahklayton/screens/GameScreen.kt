@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.*
 import jonahklayton.PlantGame
 import jonahklayton.systems.noise.OctaveSet
+import jonahklayton.systems.screen.ScreenManager
 import jonahklayton.systems.sound.SoundSystem
 import jonahklayton.systems.tutorial.Tutorial
 import jonahklayton.systems.ui.Hud
@@ -85,6 +86,10 @@ class GameScreen(private val levelNumber: Int) : KtxScreen, KtxInputAdapter {
         PlantGame.batch.end()
 
         Hud.draw()
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            ScreenManager.pop()
+        }
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
