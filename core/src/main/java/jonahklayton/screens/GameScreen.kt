@@ -17,6 +17,7 @@ import jonahklayton.systems.world.terrain.TerrainGenerator
 import ktx.app.KtxInputAdapter
 import ktx.app.KtxScreen
 import ktx.graphics.begin
+import kotlin.math.pow
 
 class GameScreen : KtxScreen, KtxInputAdapter {
     companion object {
@@ -24,7 +25,7 @@ class GameScreen : KtxScreen, KtxInputAdapter {
         const val GAME_HEIGHT = 360f
     }
 
-    private lateinit var worldCamera: Camera
+    private lateinit var worldCamera: OrthographicCamera
     private lateinit var viewport: Viewport
     private lateinit var inputMultiplexer: InputMultiplexer
     private lateinit var world: World
@@ -48,9 +49,10 @@ class GameScreen : KtxScreen, KtxInputAdapter {
     override fun render(delta: Float) {
         // mouse panning
         if (mouseDown) {
-            val tempDelta = mouseToWorldVec()
+            val tempDelta = mouseToWorldVec().sub(mousePressPos)
+            worldCamera.translate(-tempDelta.x, -tempDelta.y, 0f)
+            worldCamera.update()
             mousePressPos.set(mouseToWorldVec())
-            worldCamera.position.sub(tempDelta.x, tempDelta.y, 0f)
         }
 
         // run stuff
@@ -86,6 +88,12 @@ class GameScreen : KtxScreen, KtxInputAdapter {
         }
         return false
     }
+
+    override fun scrolled(amountX: Float, amountY: Float): Boolean {
+        worldCamera.zoom *= 2f.pow(amountY * .5f)
+        return true
+    }
+
 
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height)

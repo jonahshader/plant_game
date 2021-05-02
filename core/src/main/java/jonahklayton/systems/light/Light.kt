@@ -49,7 +49,7 @@ class Light(private val world: World) {
             }
 
             max.sub(min)
-            spawnLineLength = max.len()
+            spawnLineLength = max.len() * 1.5f
         }
     }
 

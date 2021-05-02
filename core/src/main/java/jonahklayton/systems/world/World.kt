@@ -2,7 +2,6 @@ package jonahklayton.systems.world
 
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Camera
-import com.badlogic.gdx.math.Vector2
 import jonahklayton.PlantGame
 import jonahklayton.systems.light.Light
 import jonahklayton.systems.plant.Leaf
@@ -11,7 +10,6 @@ import jonahklayton.systems.plant.Plant
 import jonahklayton.systems.plant.PlayerPlant
 import jonahklayton.systems.ui.Hud
 import jonahklayton.systems.world.terrain.Terrain
-import jonahklayton.systems.world.terrain.TerrainChunk
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 class World(level: Level, inputMultiplexer: InputMultiplexer, camera: Camera) {
