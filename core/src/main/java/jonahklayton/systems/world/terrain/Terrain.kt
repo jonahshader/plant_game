@@ -37,7 +37,7 @@ class Terrain(private val world: World, private val generator: TerrainGenerator)
         keyToChunk.values.forEach { it.update(dt) }
     }
 
-    private fun loadUnloadChunks() {
+    fun loadUnloadChunks() {
         // iterate through all nodes. keep chunks with nodes loaded
         keyToChunk.values.forEach { it.queueRemoved = true }
         world.getAllNodes().forEach {

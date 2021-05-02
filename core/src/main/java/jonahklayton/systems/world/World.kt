@@ -32,6 +32,11 @@ class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera
         inputMultiplexer.addProcessor(playerPlant)
 
         Hud.plant = playerPlant
+
+        playerPlant.placePlant()
+        enemyPlant.placePlant()
+
+        playerPlant.centerCamera()
     }
 
     fun getAllNodes() : MutableList<Node> {
@@ -73,9 +78,11 @@ class World(private val level: Level, inputMultiplexer: InputMultiplexer, camera
     }
 
     fun draw(renderer: ShapeDrawer) {
+//        playerPlant.drawShadows(renderer, getSkyBrightness())
+//        enemyPlant.drawShadows(renderer, getSkyBrightness())
         terrain.draw(getSkyBrightness())
-        playerPlant.draw(renderer, getSkyBrightness())
         enemyPlant.draw(renderer, getSkyBrightness())
+        playerPlant.draw(renderer, getSkyBrightness())
         light.draw(renderer)
         rain.draw(getSkyBrightness())
     }

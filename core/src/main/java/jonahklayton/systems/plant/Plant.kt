@@ -1,8 +1,11 @@
 package jonahklayton.systems.plant
 
 import com.badlogic.gdx.math.Vector2
+import jonahklayton.systems.light.Light
 import jonahklayton.systems.world.World
+import jonahklayton.systems.world.terrain.TerrainCell
 import space.earlygrey.shapedrawer.ShapeDrawer
+import kotlin.math.PI
 
 
 // growth/existence cost is taken care of here not in the nodes themselves
@@ -13,7 +16,7 @@ open class Plant(xPosition: Float, startingEnergy: Float, world: World, private 
     private val STORE_RATIO_FOR_GROW = 0.05F
     private val WATER_PER_LIGHT = .1f
 
-    var worldPosition = Vector2(xPosition, 300f)
+    var worldPosition = Vector2(xPosition, 100*TerrainCell.SIZE-1f)
         private set
 
     var world = world
@@ -49,7 +52,13 @@ open class Plant(xPosition: Float, startingEnergy: Float, world: World, private 
     }
 
     fun placePlant(){
-        while(!world.terrain.isUnderground(worldPosition)) worldPosition.sub(0f, -0.5f)
+        while(!world.terrain.isUnderground(worldPosition)){
+            worldPosition.sub(0f, TerrainCell.SIZE)
+            world.terrain.loadUnloadChunks()
+            root.updateWorldPosition()
+        }
+
+
     }
 
     //call to get energy from somewhere in the plant, returns the amount of energy gotten
@@ -140,9 +149,14 @@ open class Plant(xPosition: Float, startingEnergy: Float, world: World, private 
     }
 
     open fun draw(renderer: ShapeDrawer, brightness: Float){
-        for(i in nodes){
-            i.draw(renderer, brightness, hue)
-        }
+        drawShadows(renderer, brightness)
+        nodes.forEach {it.draw(renderer, brightness, hue)}
+    }
+
+    private fun drawShadows(renderer: ShapeDrawer, brightness: Float) {
+        val shadowOffset = Vector2(1f, 0f)
+        shadowOffset.rotateRad(Light.dayLightRadians(world)).scl(-1.5f)
+        nodes.forEach {it.drawShadow(renderer, brightness, shadowOffset)}
     }
 
     fun addRoot(root: Root){

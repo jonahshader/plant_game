@@ -40,15 +40,15 @@ class GameScreen(private val levelNumber: Int) : KtxScreen, KtxInputAdapter {
         worldCamera = OrthographicCamera()
         SoundSystem.camera = worldCamera
         viewport = FillViewport(GAME_WIDTH, GAME_HEIGHT, worldCamera)
-        val gen = TerrainGenerator(151253)
+        val gen = TerrainGenerator(151253+levelNumber.toLong())
         gen.octaveSet.addTwisterOctaveFractal(.01, 1.0, .5, .5, 5)
         gen.octaveSet.addOctaveFractal(.005, 1.0, .5, .5, 4)
         inputMultiplexer = InputMultiplexer()
         Gdx.input.inputProcessor = inputMultiplexer
         inputMultiplexer.addProcessor(this)
-        val weather = OctaveSet(RandomXS128())
-        weather.addOctaveFractal(0.1, 20.0, .5, .5, 3)
-        world = World(Level(0f, 250f, gen, weather, levelNumber), inputMultiplexer, worldCamera)
+        val weather = OctaveSet(RandomXS128(levelNumber.toLong()))
+        weather.addOctaveFractal(0.05, 20.0, .5, .5, 3)
+        world = World(Level(0f, 250f+50f*levelNumber, gen, weather, levelNumber), inputMultiplexer, worldCamera)
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
     }
 

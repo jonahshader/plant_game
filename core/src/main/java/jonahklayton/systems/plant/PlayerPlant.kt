@@ -16,13 +16,13 @@ class PlayerPlant(xPosition: Float, energy: Float, world: World, camera: Camera)
     }
 
 
-    private val CLICK_DISTANCE = 5F
+    private val CLICK_DISTANCE = 7F
 
     var selectedNode: Node? = null
 
     var camera = camera
 
-    init {
+    fun centerCamera(){
         camera.position.set(worldPosition.x, worldPosition.y, 0f)
         camera.update()
     }

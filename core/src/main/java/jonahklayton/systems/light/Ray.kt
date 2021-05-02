@@ -29,19 +29,21 @@ class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var trave
             return
         }
 
-        // try colliding with leaves
-        world.getAllLeaves().forEach {
-            if (it.parent != null) {
-                if (isIntersecting(pos, tipPos, it.parent!!.worldPosition, it.worldPosition)) {
-                    it.plant.receiveLight(efficiency * energy)
-                    energy *= (1 - efficiency)
+        if (world.terrain.isInLoadedChunk(pos)) {
+            // try colliding with leaves
+            world.getAllLeaves().forEach {
+                if (it.parent != null) {
+                    if (isIntersecting(pos, tipPos, it.parent!!.worldPosition, it.worldPosition)) {
+                        it.plant.receiveLight(efficiency * energy)
+                        energy *= (1 - efficiency)
+                    }
                 }
             }
-        }
-        world.getAllStems().forEach {
-            if (it.parent != null) {
-                if (isIntersecting(pos, tipPos, it.parent!!.worldPosition, it.worldPosition)) {
-                    energy *= (1 - stemReduction)
+            world.getAllStems().forEach {
+                if (it.parent != null) {
+                    if (isIntersecting(pos, tipPos, it.parent!!.worldPosition, it.worldPosition)) {
+                        energy *= (1 - stemReduction)
+                    }
                 }
             }
         }
