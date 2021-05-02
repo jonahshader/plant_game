@@ -17,4 +17,10 @@ object ScreenManager {
         stack.pop().dispose()
         game.screen = stack.peek()
     }
+
+    fun switchTo(screen: Screen) {
+        stack.pop().dispose()
+        stack.push(screen)
+        game.screen = screen
+    }
 }

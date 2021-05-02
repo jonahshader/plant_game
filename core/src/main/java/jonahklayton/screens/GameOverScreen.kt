@@ -21,7 +21,7 @@ class GameOverScreen(private val failedLevel: Int) : KtxScreen {
     private var time = 0f
 
     init {
-        menu.addMenuItem("Redo Level $failedLevel") {}
+        menu.addMenuItem("Redo Level $failedLevel") {ScreenManager.switchTo(GameScreen(failedLevel))}
         menu.addMenuItem("Main Menu") { ScreenManager.pop()}
     }
 

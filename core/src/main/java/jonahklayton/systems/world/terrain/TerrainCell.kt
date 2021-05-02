@@ -50,7 +50,7 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
     private val waterGenPerSecond: Float = when (type) {
         TerrainType.DIRT -> 0.002f
         TerrainType.GRASS -> 0f
-        TerrainType.STONE -> 0.003f
+        TerrainType.STONE -> -0.01f
     }
 
     private val mixTimerInterval: Float = when (type) {

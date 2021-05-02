@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.*
 import jonahklayton.PlantGame
 import jonahklayton.systems.noise.OctaveSet
+import jonahklayton.systems.sound.SoundSystem
 import jonahklayton.systems.ui.Hud
 import jonahklayton.systems.world.Level
 import jonahklayton.systems.world.World
@@ -21,7 +22,7 @@ import ktx.app.KtxScreen
 import ktx.graphics.begin
 import kotlin.math.pow
 
-class GameScreen : KtxScreen, KtxInputAdapter {
+class GameScreen(levelNumber: Int) : KtxScreen, KtxInputAdapter {
     companion object {
         const val GAME_WIDTH = 640f
         const val GAME_HEIGHT = 360f
@@ -37,6 +38,7 @@ class GameScreen : KtxScreen, KtxInputAdapter {
 
     override fun show() {
         worldCamera = OrthographicCamera()
+        SoundSystem.camera = worldCamera
         viewport = FillViewport(GAME_WIDTH, GAME_HEIGHT, worldCamera)
         val gen = TerrainGenerator(151253)
         gen.octaveSet.addTwisterOctaveFractal(.01, 1.0, .5, .5, 5)

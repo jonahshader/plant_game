@@ -24,7 +24,7 @@ class WinScreen(private val passedLevel: Int) : KtxScreen {
     private var time = 0f
 
     init {
-        menu.addMenuItem("Level ${passedLevel+1}") {}
+        menu.addMenuItem("Level ${passedLevel+1}") {ScreenManager.switchTo(GameScreen(passedLevel+1))}
         menu.addMenuItem("Main Menu") {ScreenManager.pop()}
     }
 
