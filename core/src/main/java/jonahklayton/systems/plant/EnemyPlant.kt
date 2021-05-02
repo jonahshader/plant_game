@@ -74,7 +74,7 @@ class EnemyPlant(position: Vector2, energy: Float, world: World, difficulty: Int
         var lr = 0F
 
         if(branch){
-            lr += 45F - Random.nextInt(0, 1)*90F
+            lr += 45F - Random.nextInt(0, 2)*90F
         }
 
         var moveDist = 10

@@ -10,7 +10,7 @@ import jonahklayton.systems.ui.TextRenderer
 class Message(private val text: String, private val size: Vector2, private val position: Vector2) {
     fun draw(viewport: ScalingViewport) {
         val lines = text.filterIndexed{ _: Int, c: Char -> c == '\n'}.length
-        val lineHeight = .5f*(size.y-8)/lines
+        val lineHeight = (size.y-8)/(lines+1)
 
         PlantGame.shapeDrawer.setColor(.8f, .8f, .8f, .8f)
         CustomShapes.filledRoundedRect(PlantGame.shapeDrawer, position.x - size.x/2f, position.y - size.y/2f, size.x, size.y, 8f)

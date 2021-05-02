@@ -26,11 +26,6 @@ class PlayerPlant(position: Vector2, energy: Float, world: World, camera: Camera
 
     var camera = camera
 
-    override fun update(timePassed: Float) {
-        super.update(timePassed)
-
-    }
-
     override fun draw(renderer: ShapeDrawer, brightness: Float) {
         if (selectedNode != null) {
             renderer.setColor(0.5f, 0.5f, 0.5f, 0.5f)
