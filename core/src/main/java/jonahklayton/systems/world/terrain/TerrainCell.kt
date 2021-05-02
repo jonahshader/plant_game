@@ -59,7 +59,11 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
         TerrainType.STONE -> 1f
     }
 
-    private var water = 0f
+    var water: Float = when (type) {
+        TerrainType.DIRT -> maxWater * .1f
+        TerrainType.GRASS -> maxWater * .5f
+        TerrainType.STONE -> 0f
+    }
     private var mixTimer = 0f
 
     init {
@@ -127,6 +131,13 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
             water = 0f
             amount
         }
+    }
+
+    // returns amount taken (not percent)
+    fun takePercentageOfWater(requestedPercent: Float) : Float {
+        val amount = requestedPercent * water
+        water -= amount
+        return amount
     }
 
     fun putWater(requestedAmount: Float) {

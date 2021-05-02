@@ -1,9 +1,12 @@
 package jonahklayton.systems.plant
 
 import com.badlogic.gdx.math.Vector2
+import jonahklayton.systems.world.terrain.Terrain
 import space.earlygrey.shapedrawer.ShapeDrawer
+import java.lang.Double.min
+import kotlin.math.min
 
-class Root(relativeTargetPosition: Vector2, parent: Node?, plant: Plant, storedEnergy: Float): Node(relativeTargetPosition, parent, plant) {
+class Root(relativeTargetPosition: Vector2, parent: Node?, plant: Plant, storedEnergy: Float, private val terrain: Terrain): Node(relativeTargetPosition, parent, plant) {
     private val storagePerThicknessSq = 100F
     private val waterAvailabilityPerThickness = 10F
     private val THICKNESS_COST = 10F
@@ -15,8 +18,12 @@ class Root(relativeTargetPosition: Vector2, parent: Node?, plant: Plant, storedE
     var waterLeftInTick = 0F
 
     fun getWater(quantity: Float): Float{
-        //TODO: tell terrain water taken (limited by thickness) and return the amount we got (don't forget to add to water absorbed)
-        return 0F
+        val amount = min(quantity, waterLeftInTick)
+        return if (parent != null) {
+            val successfulAmount = terrain.takeWater(amount, parent!!.worldPosition, worldPosition)
+            waterLeftInTick -= successfulAmount
+            successfulAmount
+        } else 0f
     }
 
     override fun draw(renderer: ShapeDrawer){

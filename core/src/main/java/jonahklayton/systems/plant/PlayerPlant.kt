@@ -68,7 +68,7 @@ class PlayerPlant(position: Vector2, energy: Float, world: World, camera: Camera
 
             if (relPos.len() < MAX_SIZE && relPos.len() > CLICK_DISTANCE) when {
                 selectedNode!!.plant.world.terrain.isUnderground(worldPos) -> {
-                    var child = Root(relPos, selectedNode!!, selectedNode!!.plant, 0F)
+                    var child = Root(relPos, selectedNode!!, selectedNode!!.plant, 0F, world.terrain)
                     selectedNode!!.addChild(child)
                     selectedNode!!.plant.addRoot(child)
                     print("root")
