@@ -1,6 +1,7 @@
 package jonahklayton.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -13,19 +14,24 @@ import jonahklayton.systems.ui.Hud
 import jonahklayton.systems.world.Level
 import jonahklayton.systems.world.World
 import jonahklayton.systems.world.terrain.TerrainGenerator
+import ktx.app.KtxInputAdapter
 import ktx.app.KtxScreen
 import ktx.graphics.begin
+import kotlin.math.pow
 
-class GameScreen : KtxScreen {
+class GameScreen : KtxScreen, KtxInputAdapter {
     companion object {
         const val GAME_WIDTH = 640f
         const val GAME_HEIGHT = 360f
     }
 
-    private lateinit var worldCamera: Camera
+    private lateinit var worldCamera: OrthographicCamera
     private lateinit var viewport: Viewport
     private lateinit var inputMultiplexer: InputMultiplexer
     private lateinit var world: World
+
+    private val mousePressPos = Vector2()
+    private var mouseDown = false
 
     override fun show() {
         worldCamera = OrthographicCamera()
@@ -35,15 +41,25 @@ class GameScreen : KtxScreen {
         gen.octaveSet.addOctaveFractal(.005, 1.0, .5, .5, 4)
         inputMultiplexer = InputMultiplexer()
         Gdx.input.inputProcessor = inputMultiplexer
-        world = World(Level(Vector2(), Vector2(50f, 13f), gen), inputMultiplexer, worldCamera)
+        world = World(Level(Vector2(), Vector2(50f, 13f), gen, 1), inputMultiplexer, worldCamera)
+        inputMultiplexer.addProcessor(this)
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
     }
 
     override fun render(delta: Float) {
+        // mouse panning
+        if (mouseDown) {
+            val tempDelta = mouseToWorldVec().sub(mousePressPos)
+            worldCamera.translate(-tempDelta.x, -tempDelta.y, 0f)
+            worldCamera.update()
+            mousePressPos.set(mouseToWorldVec())
+        }
+
         // run stuff
         world.update(delta)
 
-        ScreenUtils.clear(.2f, .5f, 1f, 1f)
+        val brightness = world.getSkyBrightness()
+        ScreenUtils.clear(.2f * brightness, .5f * brightness, 1f * brightness, 1f)
         viewport.apply()
         PlantGame.batch.begin(worldCamera)
 //        TextRenderer.begin(PlantGame.batch, viewport, TextRenderer.Font.NORMAL, 32f, 0f)
@@ -55,6 +71,30 @@ class GameScreen : KtxScreen {
 
         Hud.draw()
     }
+
+    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        if (button == Input.Buttons.MIDDLE) {
+            mousePressPos.set(mouseToWorldVec())
+            mouseDown = true
+            return true
+        }
+
+        return false
+    }
+
+    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        if (button == Input.Buttons.MIDDLE) {
+            mouseDown = false
+            return true
+        }
+        return false
+    }
+
+    override fun scrolled(amountX: Float, amountY: Float): Boolean {
+        worldCamera.zoom *= 2f.pow(amountY * .5f)
+        return true
+    }
+
 
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height)

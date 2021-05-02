@@ -108,16 +108,25 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
         mixTimer -= dt
 
         water += dt * waterGenPerSecond
+        val nan = water.isNaN()
         water = water.coerceIn(0f, maxWater)
+        if (water.isNaN()) {
+            water = 0f
+            println("Water NaN!!!")
+            if (!nan) println("wasn't nan before")
+        }
     }
 
-    fun draw() {
+    fun draw(brightness: Float) {
         val waterTintness = water / maxWater.coerceAtLeast(1f)
 //        sprite.color.set(tint.r, tint.g, tint.b, tint.a)
 //        sprite.color.lerp(waterTint, waterTintness)
 //        sprite.draw(batch)
         currentColor.set(tint.r, tint.g, tint.b, tint.a)
         currentColor.lerp(waterTint, waterTintness)
+        currentColor.r *= brightness
+        currentColor.g *= brightness
+        currentColor.b *= brightness
         PlantGame.shapeDrawer.setColor(currentColor)
         PlantGame.shapeDrawer.filledRectangle(xCell * SIZE, yCell * SIZE, SIZE, SIZE)
     }
@@ -148,5 +157,4 @@ class TerrainCell(private val xCell: Int, private val yCell: Int, type: TerrainT
     private fun resetTimer() {
         mixTimer += rand.nextFloat() * mixTimerInterval
     }
-
 }

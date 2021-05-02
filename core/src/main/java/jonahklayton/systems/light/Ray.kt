@@ -7,6 +7,7 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 
 class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var travelDistanceRemaining: Float, private var world: World) {
     private val efficiency = .5f
+    private val stemReduction = .3f
     private val length = 4f
 
     private val tipPos = Vector2()
@@ -33,6 +34,13 @@ class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var trave
                 if (isIntersecting(pos, tipPos, it.parent!!.worldPosition, it.worldPosition)) {
                     it.plant.receiveLight(efficiency * energy)
                     energy *= (1 - efficiency)
+                }
+            }
+        }
+        world.getAllStems().forEach {
+            if (it.parent != null) {
+                if (isIntersecting(pos, tipPos, it.parent!!.worldPosition, it.worldPosition)) {
+                    energy *= (1 - stemReduction)
                 }
             }
         }

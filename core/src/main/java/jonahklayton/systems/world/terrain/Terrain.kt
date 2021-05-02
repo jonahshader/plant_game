@@ -28,8 +28,8 @@ class Terrain(private val world: World, private val generator: TerrainGenerator)
         return getCell(TerrainChunk.worldPosToCellPos(worldPos.x), TerrainChunk.worldPosToCellPos(worldPos.y))
     }
 
-    fun draw(batch: SpriteBatch) {
-        keyToChunk.values.forEach { it.draw(batch) }
+    fun draw(brightness: Float) {
+        keyToChunk.values.forEach { it.draw(brightness) }
     }
 
     fun update(dt: Float) {

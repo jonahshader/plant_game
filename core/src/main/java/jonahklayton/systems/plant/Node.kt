@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
 import space.earlygrey.shapedrawer.ShapeDrawer
 
-open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
+open class Node(relativeTargetPosition: Vector2, parent: Node?, var plant: Plant){
     var relativePosition = Vector2(relativeTargetPosition).nor().scl(0.0001F) //Not zero so the node doesn't immediately die.
         private set
 
@@ -24,15 +24,13 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, plant: Plant){
     var children = ArrayList<Node>()
         private set
 
-    var plant = plant
-
     var thickness = 3F
 
     open fun update(timePassed: Float){
 
     }
 
-    open fun draw(renderer: ShapeDrawer){
+    open fun draw(renderer: ShapeDrawer, brightness: Float){
         if (parent != null) {
             renderer.line(worldPosition, parent!!.worldPosition, thickness)
         }

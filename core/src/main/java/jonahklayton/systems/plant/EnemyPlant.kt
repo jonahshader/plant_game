@@ -8,7 +8,7 @@ class EnemyPlant(position: Vector2, energy: Float, world: World) : Plant(positio
 
     companion object{
         const val MAX_LEAVES = 2
-        const val GROWTH_THRESHOLD = 25
+        const val GROWTH_THRESHOLD = 100
     }
 
     var currentStem: Node = root
@@ -30,12 +30,17 @@ class EnemyPlant(position: Vector2, energy: Float, world: World) : Plant(positio
     fun makeLeaf(){
         var parent = currentStem
 
+        var moveDist = 10
+
+        var lr = if(Random.nextBoolean()) 90F else -90F
+
         var pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
-            .setAngleDeg(Random.nextFloat())
+            .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg()+lr)
             .scl(Random.nextFloat()*10+15f))
         while(world.terrain.isUnderground(pos)){
+            moveDist += 5
             pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
-                .setAngleDeg(Random.nextFloat()*360)
+                .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg()+lr)
                 .scl(Random.nextFloat()*10+15f))
         }
 
@@ -50,12 +55,16 @@ class EnemyPlant(position: Vector2, energy: Float, world: World) : Plant(positio
     fun makeStem(){
         var parent = currentStem
 
+
+        var moveDist = 10
+
         var pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
-            .setAngleDeg(Random.nextFloat())
+            .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg())
             .scl(Random.nextFloat()*5+5f))
         while(world.terrain.isUnderground(pos)){
+            moveDist += 5
             pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
-                .setAngleDeg(Random.nextFloat()*180)
+                .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg())
                 .scl(Random.nextFloat()*5+5f))
         }
 
@@ -72,14 +81,20 @@ class EnemyPlant(position: Vector2, energy: Float, world: World) : Plant(positio
     fun makeRoot(){
         roots.shuffle()
         var parent = roots.get(0)
+        if(parent == root){
+            parent = roots.get(1)
+        }
+
+        var moveDist = 10
 
         var pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
-            .setAngleDeg(Random.nextFloat())
+            .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg())
             .scl(Random.nextFloat()*20+5f))
         while(!world.terrain.isUnderground(pos)){
+            moveDist += 5
             pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
-                .setAngleDeg(Random.nextFloat()*360)
-                .scl(Random.nextFloat()*20+5f))
+                .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg())
+                .scl(Random.nextFloat()*20+25f))
         }
 
         pos.sub(parent.worldPosition)
