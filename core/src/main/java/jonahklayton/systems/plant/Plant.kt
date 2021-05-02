@@ -8,10 +8,11 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 
 // growth/existence cost is taken care of here not in the nodes themselves
 open class Plant(position: Vector2, startingEnergy: Float, world: World){
-    private val ENERGY_PER_LENGTH_SUSTAINED = 0.1F
+    private val ENERGY_PER_LENGTH_SUSTAINED = 0.01F
     private val ENERGY_PER_LENGTH_GROWN = 1F
     private val ENERGY_PER_LENGTH_KILLED = 0.9F
-    private val STORE_RATIO_FOR_GROW = 0.1F
+    private val STORE_RATIO_FOR_GROW = 0.05F
+    private val WATER_PER_LIGHT = .3f
 
     var worldPosition = position.cpy()
         private set
@@ -19,7 +20,7 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
     var world = world
         private set
 
-    var root = Root(Vector2(), null, this, startingEnergy)
+    var root = Root(Vector2(), null, this, startingEnergy, world.terrain)
         private set
 
     var energy = 0F
@@ -40,7 +41,7 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
     init {
         addRoot(root)
 
-        var child = Root(Vector2(0F, -10F), root, this, 0F)
+        var child = Root(Vector2(0F, -10F), root, this, 0F, world.terrain)
         root.addChild(child)
 
         addRoot(child)
@@ -113,7 +114,6 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
         }
 
         if(energy > 0) {
-
             //store energy in roots
             for (i in roots) {
                 if (energy > 0) {
@@ -126,7 +126,7 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
         energy = 0F
 
         for(i in nodes){
-            i.update(timePassed);
+            i.update(timePassed)
         }
 
         manageLists()
@@ -153,12 +153,12 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
         nodes.add(leaf)
     }
 
-    fun recieveLight(energyLevel: Float){
-        var waterNeeded = energyLevel
+    fun receiveLight(energyLevel: Float){
+        var waterNeeded = energyLevel * WATER_PER_LIGHT
         roots.shuffle()
         for(i in roots){
             waterNeeded -= i.getWater(waterNeeded)
-            if(waterNeeded <= 0) break;
+            if(waterNeeded <= 0) break
         }
 
         energy += energyLevel-waterNeeded

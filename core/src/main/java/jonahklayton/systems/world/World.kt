@@ -15,9 +15,9 @@ import jonahklayton.systems.world.terrain.TerrainChunk
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 class World(level: Level, inputMultiplexer: InputMultiplexer, camera: Camera) {
+    val terrain = Terrain(this, level.generator)
     private val playerPlant = PlayerPlant(level.playerPos, 100F, this, camera)
     private val enemyPlant = Plant(level.enemyPos, 100F, this)
-    val terrain = Terrain(this, level.generator)
 
     private val light = Light(this)
 

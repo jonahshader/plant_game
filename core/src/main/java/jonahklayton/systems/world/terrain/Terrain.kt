@@ -8,8 +8,12 @@ class Terrain(private val world: World, private val generator: TerrainGenerator)
     companion object {
         const val LOAD_CHUNK_RADIUS = 1
     }
-//    private val tempDir
+
+    // variables for water absorption algo
+    private val iterationsPerCell = 2f
     private val tempCellsWithWater = mutableListOf<TerrainCell>()
+    private val tempPos = Vector2()
+    private val tempStep = Vector2()
     private val keyToChunk = HashMap<String, TerrainChunk>()
 
     // hopefully this returns null if there isn't a cell there. idk if the '?' operator works like that
@@ -60,9 +64,37 @@ class Terrain(private val world: World, private val generator: TerrainGenerator)
 
     fun isUnderground(worldPos: Vector2) : Boolean = isInLoadedChunk(worldPos) && getCellFromWorldPos(worldPos) != null
 
-    fun takeWater(amount: Float, startPos: Vector2, endPos: Vector2) {
+    fun takeWater(amount: Float, startPos: Vector2, endPos: Vector2) : Float {
         // build list of tiles
         tempCellsWithWater.clear()
+        tempPos.set(startPos)
+        tempStep.set(endPos).sub(startPos)
+        val length = tempStep.len()
+        tempStep.nor().scl(TerrainCell.SIZE / iterationsPerCell)
+        val iterations = ((length/ TerrainCell.SIZE) * iterationsPerCell).toInt()
 
+        val firstCell = getCellFromWorldPos(tempPos)
+        if (firstCell != null) {
+            tempCellsWithWater += firstCell
+        }
+        for (i in 0 until iterations) {
+            tempPos.add(tempStep)
+            val cell = getCellFromWorldPos(tempPos)
+            if (cell != null && !tempCellsWithWater.contains(cell)) tempCellsWithWater += cell
+        }
+        var waterAvailable = 0f
+        tempCellsWithWater.forEach {
+            waterAvailable += it.water
+        }
+
+        val percentNeeded = amount / waterAvailable
+
+        return if (percentNeeded > 1) {
+            tempCellsWithWater.forEach { it.takePercentageOfWater(1f) }
+            waterAvailable
+        } else {
+            tempCellsWithWater.forEach { it.takePercentageOfWater(percentNeeded) }
+            amount
+        }
     }
 }
