@@ -5,20 +5,21 @@ import jonahklayton.systems.world.World
 import kotlin.math.PI
 import kotlin.random.Random
 
-class EnemyPlant(position: Vector2, energy: Float, world: World, APS: Int) : Plant(position, energy, world, PI.toFloat()){
+class EnemyPlant(position: Vector2, energy: Float, world: World, difficulty: Int) : Plant(position, energy, world, PI.toFloat()){
 
     var currentStem: Node = root
     var timeSinceLastAction = 0F
-    var APS = APS
+    var APS = difficulty
     val maxLeaves = Random.nextInt(2, 6)
-    var growthThreshold = 50
+    var growthThreshold = 50/difficulty+7
+    var branchChance = 0.9F/difficulty
 
     override fun update(timePassed: Float) {
         super.update(timePassed)
 
         timeSinceLastAction += timePassed
 
-        if(world.getIsMorning()
+        if(world.getDayProgress() < 0.5
             && getGrowingNodes().isEmpty()
             && storedEnergy() > growthThreshold
             && timeSinceLastAction*APS >= 1){
@@ -26,7 +27,14 @@ class EnemyPlant(position: Vector2, energy: Float, world: World, APS: Int) : Pla
                 timeSinceLastAction = 0F
 
                 if(currentBottleneck().toUpperCase() == "LIGHT"){
-                if(currentStem.children.size >= maxLeaves) makeStem()
+                if(currentStem.children.size >= maxLeaves){
+                    if(stems.size > 1 && Random.nextFloat() < branchChance){
+                        stems.shuffle()
+                        currentStem = stems[0]
+                        makeStem(true)
+                    }
+                    else makeStem(false)
+                }
                 else makeLeaf()
             }else{
                 makeRoot()
@@ -60,19 +68,24 @@ class EnemyPlant(position: Vector2, energy: Float, world: World, APS: Int) : Pla
         addLeaf(child)
     }
 
-    fun makeStem(){
+    fun makeStem(branch: Boolean){
         var parent = currentStem
 
+        var lr = 0F
+
+        if(branch){
+            lr += 45F - Random.nextInt(0, 1)*90F
+        }
 
         var moveDist = 10
 
         var pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
-            .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg())
+            .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg() + lr)
             .scl(Random.nextFloat()*5+5f))
         while(world.terrain.isUnderground(pos)){
             moveDist += 5
             pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
-                .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg())
+                .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg() + lr)
                 .scl(Random.nextFloat()*5+5f))
         }
 

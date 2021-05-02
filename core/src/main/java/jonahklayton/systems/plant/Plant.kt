@@ -12,7 +12,7 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World, private
     private val ENERGY_PER_LENGTH_GROWN = 1F
     private val ENERGY_PER_LENGTH_KILLED = 0.9F
     private val STORE_RATIO_FOR_GROW = 0.05F
-    private val WATER_PER_LIGHT = .3f
+    private val WATER_PER_LIGHT = .1f
 
     var worldPosition = position.cpy()
         private set
