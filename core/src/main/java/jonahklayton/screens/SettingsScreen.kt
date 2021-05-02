@@ -40,7 +40,7 @@ class SettingsScreen : KtxScreen {
 
     override fun render(delta: Float) {
         ScreenUtils.clear(.2f, .5f, 1f, 1f)
-        menu.run(delta)
+        menu.run(delta, viewport)
 
         viewport.apply()
 

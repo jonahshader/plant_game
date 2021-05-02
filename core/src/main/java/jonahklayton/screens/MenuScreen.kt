@@ -46,7 +46,7 @@ class MenuScreen : KtxScreen {
         gen.octaveSet.addOctaveFractal(.005, 1.0, .5, .5, 4)
         val weather = OctaveSet(RandomXS128())
         weather.addOctaveFractal(0.05, 20.0, .5, .5, 3)
-        world = World(Level(0f, 250f+50f*1, gen, weather, 1), InputMultiplexer(), worldCamera, true)
+        world = World(Level(0f, 250f+50f*1, gen, weather, 1), InputMultiplexer(), worldCamera, bgViewport, true)
 
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
         bgViewport.update(Gdx.graphics.width, Gdx.graphics.height)
@@ -56,7 +56,7 @@ class MenuScreen : KtxScreen {
 
     override fun render(delta: Float) {
         ScreenUtils.clear(.25f, .25f, .25f, 1f)
-        menu.run(delta)
+
         world.update(delta)
 
         val brightness = world.getSkyBrightness()
@@ -80,7 +80,7 @@ class MenuScreen : KtxScreen {
         TextRenderer.color = Color.WHITE
         TextRenderer.drawTextCentered(0f, viewport.worldHeight*.5f-225f, "Plant Vs Plant", 4f, 0.75f)
         TextRenderer.end()
-
+        menu.run(delta, viewport)
         menu.draw(PlantGame.batch, PlantGame.shapeDrawer, viewport)
 
         PlantGame.batch.end()

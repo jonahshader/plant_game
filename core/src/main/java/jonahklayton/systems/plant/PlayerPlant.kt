@@ -5,11 +5,12 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.utils.viewport.ScalingViewport
 import jonahklayton.systems.world.World
 import ktx.app.KtxInputAdapter
 import space.earlygrey.shapedrawer.ShapeDrawer
 
-class PlayerPlant(xPosition: Float, energy: Float, world: World, camera: Camera) : Plant(xPosition, energy, world, 0f),
+class PlayerPlant(xPosition: Float, energy: Float, world: World, camera: Camera, private val viewport: ScalingViewport) : Plant(xPosition, energy, world, 0f),
     KtxInputAdapter {
     companion object {
         const val MAX_SIZE = 50F
@@ -106,8 +107,7 @@ class PlayerPlant(xPosition: Float, energy: Float, world: World, camera: Camera)
     }
 
     fun mouseToWorldVec(input: Vector2): Vector2 {
-        val vec = camera.unproject(Vector3(input.x, input.y, 0f))
+        val vec = viewport.unproject(Vector3(input.x, input.y, 0f))
         return Vector2(vec.x, vec.y)
     }
-
 }
