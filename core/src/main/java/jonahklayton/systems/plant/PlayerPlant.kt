@@ -30,8 +30,11 @@ class PlayerPlant(position: Vector2, energy: Float, world: World, camera: Camera
     override fun draw(renderer: ShapeDrawer) {
         if (selectedNode != null) {
             renderer.setColor(0.5f, 0.5f, 0.5f, 0.5f)
+            var relPos = mouseToWorldVec(Vector2(Gdx.input.x.toFloat(), Gdx.input.y.toFloat())).sub(selectedNode!!.worldPosition)
+                    if(relPos.len() > MAX_SIZE) relPos.nor().scl(MAX_SIZE)
             renderer.line(
-                selectedNode!!.worldPosition, mouseToWorldVec(Vector2(Gdx.input.x.toFloat(), Gdx.input.y.toFloat())),
+                selectedNode!!.worldPosition,
+                selectedNode!!.worldPosition.cpy().add(relPos),
                 3f
             )
         }
@@ -66,7 +69,11 @@ class PlayerPlant(position: Vector2, energy: Float, world: World, camera: Camera
         if (selectedNode != null) {
             var relPos = worldPos.cpy().sub(selectedNode!!.worldPosition)
 
-            if (relPos.len() < MAX_SIZE && relPos.len() > CLICK_DISTANCE) when {
+            if(relPos.len() > MAX_SIZE){
+                relPos.nor().scl(MAX_SIZE)
+            }
+
+            if (relPos.len() > CLICK_DISTANCE) when {
                 selectedNode!!.plant.world.terrain.isUnderground(worldPos) -> {
                     var child = Root(relPos, selectedNode!!, selectedNode!!.plant, 0F, world.terrain)
                     selectedNode!!.addChild(child)

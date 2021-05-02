@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.*
 import jonahklayton.PlantGame
+import jonahklayton.systems.ui.Hud
 import jonahklayton.systems.world.Level
 import jonahklayton.systems.world.World
 import jonahklayton.systems.world.terrain.TerrainGenerator
@@ -64,6 +65,8 @@ class GameScreen : KtxScreen, KtxInputAdapter {
 //        TextRenderer.end()
         world.draw(PlantGame.shapeDrawer)
         PlantGame.batch.end()
+
+        Hud.draw()
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
@@ -86,6 +89,7 @@ class GameScreen : KtxScreen, KtxInputAdapter {
 
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height)
+        Hud.resize(width, height)
     }
 
     fun mouseToWorldVec() : Vector2 {

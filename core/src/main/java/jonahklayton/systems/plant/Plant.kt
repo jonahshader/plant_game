@@ -38,6 +38,8 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
     var leaves = mutableListOf<Leaf>()
         private set
 
+    private var bottleneck = "light"
+
     init {
         addRoot(root)
 
@@ -161,6 +163,9 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
             if(waterNeeded <= 0) break
         }
 
+        if(waterNeeded > 0) bottleneck = "water"
+        else bottleneck = "light"
+
         energy += energyLevel-waterNeeded
     }
 
@@ -169,5 +174,29 @@ open class Plant(position: Vector2, startingEnergy: Float, world: World){
         stems.removeIf {x->x.isDead}
         leaves.removeIf {x->x.isDead}
         nodes.removeIf {x->x.isDead}
+    }
+
+    fun storedEnergy(): Float{
+        var storedEnergy = 0F
+
+        for(i in roots){
+            storedEnergy += i.storedEnergy
+        }
+
+        return storedEnergy
+    }
+
+    fun storedEnergyCapacity(): Float{
+        var storedEnergyCapacity = 0F
+
+        for(i in roots){
+            storedEnergyCapacity += i.getMaxStoredEnergy()
+        }
+
+        return storedEnergyCapacity
+    }
+
+    fun currentBottleneck(): String {
+        return bottleneck
     }
 }

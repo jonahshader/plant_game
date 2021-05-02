@@ -9,6 +9,7 @@ import jonahklayton.systems.plant.Leaf
 import jonahklayton.systems.plant.Node
 import jonahklayton.systems.plant.Plant
 import jonahklayton.systems.plant.PlayerPlant
+import jonahklayton.systems.ui.Hud
 import jonahklayton.systems.world.terrain.Terrain
 import jonahklayton.systems.world.terrain.TerrainChunk
 import space.earlygrey.shapedrawer.ShapeDrawer
@@ -28,6 +29,8 @@ class World(level: Level, inputMultiplexer: InputMultiplexer, camera: Camera) {
     init {
         // register player plant as an input processor
         inputMultiplexer.addProcessor(playerPlant)
+
+        Hud.plant = playerPlant
     }
 
     fun getAllNodes() : MutableList<Node> {
