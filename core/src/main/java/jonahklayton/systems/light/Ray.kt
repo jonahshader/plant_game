@@ -4,13 +4,14 @@ import com.badlogic.gdx.math.Vector2
 import external.isIntersecting
 import jonahklayton.systems.light.Light.Companion.MAX_STARTING_ENERGY
 import jonahklayton.systems.world.World
+import jonahklayton.systems.world.terrain.TerrainChunk
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var travelDistanceRemaining: Float, private val world: World) {
-    private val efficiency = .5f
+    private val efficiency = .75f
     private val stemReduction = .3f
     private val length = 4f
-
+    private val startingEnergy = energy
     private val tipPos = Vector2()
     private val lengthVector = Vector2(angle)
     var queueRemoval = false
@@ -29,9 +30,10 @@ class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var trave
             return
         }
 
-        if (world.terrain.isInLoadedChunk(pos)) {
+        if (world.terrain.isInLoadedChunk(tipPos)) {
             // try colliding with leaves
-            world.getAllLeaves().forEach {
+            val chunk = world.terrain.keyToChunk[TerrainChunk.worldPosToKey(tipPos)]
+            chunk?.leaves?.forEach {
                 if (it.parent != null) {
                     if (isIntersecting(pos, tipPos, it.parent!!.worldPosition, it.worldPosition)) {
                         it.plant.receiveLight(efficiency * energy)
@@ -39,13 +41,33 @@ class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var trave
                     }
                 }
             }
-            world.getAllStems().forEach {
+//            world.getAllLeaves().forEach {
+//                if (it.parent != null) {
+//                    if (isIntersecting(pos, tipPos, it.parent!!.worldPosition, it.worldPosition)) {
+//                        it.plant.receiveLight(efficiency * energy)
+//                        energy *= (1 - efficiency)
+//                    }
+//                }
+//            }
+//            world.getAllStems().forEach {
+//                if (it.parent != null) {
+//                    if (isIntersecting(pos, tipPos, it.parent!!.worldPosition, it.worldPosition)) {
+//                        energy *= (1 - stemReduction)
+//                    }
+//                }
+//            }
+            chunk?.stems?.forEach {
                 if (it.parent != null) {
                     if (isIntersecting(pos, tipPos, it.parent!!.worldPosition, it.worldPosition)) {
                         energy *= (1 - stemReduction)
                     }
                 }
             }
+        }
+
+        if (energy / startingEnergy < .1) {
+            queueRemoval = true
+            return
         }
 
         // try colliding with ground

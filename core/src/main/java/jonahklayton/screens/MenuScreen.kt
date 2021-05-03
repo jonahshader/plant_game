@@ -26,9 +26,9 @@ class MenuScreen : KtxScreen {
     private val camera = OrthographicCamera()
     private val viewport = FitViewport(640f, 900f, camera)
     private val menu = Menu(TextRenderer.Font.HEAVY, camera, Vector2(), Vector2(500f, 90f))
-    private lateinit var world: World
-    private lateinit var worldCamera: OrthographicCamera
-    private lateinit var bgViewport: FillViewport
+    private var world: World
+    private var worldCamera: OrthographicCamera
+    private var bgViewport: FillViewport
 
     init {
         menu.addMenuItem("Tutorial") {ScreenManager.push(GameScreen(0))}
@@ -36,10 +36,6 @@ class MenuScreen : KtxScreen {
         menu.addMenuItem("Settings") {ScreenManager.push(SettingsScreen())}
         menu.addMenuItem("Exit") {Gdx.app.exit()}
 
-        if((Settings.settings["fullscreen"] as String).toBoolean()) Gdx.graphics.setFullscreenMode(Gdx.graphics.displayMode)
-    }
-
-    override fun show() {
         worldCamera = OrthographicCamera()
         SoundSystem.camera = worldCamera
         worldCamera.zoom = 0.5f
@@ -51,6 +47,10 @@ class MenuScreen : KtxScreen {
         weather.addOctaveFractal(0.05, 20.0, .5, .5, 3)
         world = World(Level(0f, 250f+50f*1, gen, weather, 1), InputMultiplexer(), worldCamera, bgViewport, true)
 
+        if((Settings.settings["fullscreen"] as String).toBoolean()) Gdx.graphics.setFullscreenMode(Gdx.graphics.displayMode)
+    }
+
+    override fun show() {
         viewport.update(Gdx.graphics.width, Gdx.graphics.height)
         bgViewport.update(Gdx.graphics.width, Gdx.graphics.height)
 

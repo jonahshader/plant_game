@@ -12,7 +12,7 @@ import kotlin.math.pow
 
 class Light(private val world: World) {
     companion object {
-        const val MAX_STARTING_ENERGY = 4f
+        const val MAX_STARTING_ENERGY = 3.125f
         fun dayLightRadians(world: World) : Float {
             val angle = Vector2(1f, 0f).rotateRad((-world.getDayProgress() * 2 * PI + PI).toFloat())
             angle.y += .33f
@@ -27,7 +27,7 @@ class Light(private val world: World) {
     private val lightSpawnPosLineCenter = Vector2()
     private var spawnLineLength = 10f
 
-    private var raysPerLengthPerSecond = 2.5f
+    private var raysPerLengthPerSecond = 2f
     private var spawnQueue = 0f
 
     private var renderingEnabled = false
@@ -92,6 +92,7 @@ class Light(private val world: World) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.L) || Gdx.input.isKeyJustPressed(Input.Keys.P)) renderingEnabled = !renderingEnabled
 
         // run rays
+//        rays.parallelStream().forEach {it.update()}
         rays.forEach {it.update()}
         rays.removeIf{it.queueRemoval}
     }
