@@ -37,15 +37,15 @@ class Light(private val world: World) {
         worldToSunAngle.setAngleRad(dayLightRadians(world))
     }
 
-    private fun updateLightSpawn() {
-        lightSpawnPosCenter.set(0f, 0f)
-        if (world.getAllLeaves().size > 0) {
-            world.getAllLeaves().forEach {
-                lightSpawnPosCenter.add(it.worldPosition)
-            }
-            lightSpawnPosCenter.scl(1f/world.getAllLeaves().size)
-        }
-    }
+//    private fun updateLightSpawn() {
+//        lightSpawnPosCenter.set(0f, 0f)
+//        if (world.getAllLeaves().size > 0) {
+//            world.getAllLeaves().forEach {
+//                lightSpawnPosCenter.add(it.worldPosition)
+//            }
+//            lightSpawnPosCenter.scl(1f/world.getAllLeaves().size)
+//        }
+//    }
 
     private fun updateLightSpawnLineLength() {
         spawnLineLength = 10f
@@ -59,8 +59,11 @@ class Light(private val world: World) {
                 if (it.worldPosition.y > max.y) max.y = it.worldPosition.y
             }
 
+            lightSpawnPosCenter.set(min)
+            lightSpawnPosCenter.add(max)
+            lightSpawnPosCenter.scl(.5f)
             max.sub(min)
-            spawnLineLength = max.len() * 1.5f
+            spawnLineLength = max.len() * 1.1f
         }
     }
 
@@ -71,11 +74,11 @@ class Light(private val world: World) {
         spawnQueue -= toSpawn
 
         updateLightAngle()
-        updateLightSpawn()
+//        updateLightSpawn()
         updateLightSpawnLineLength()
 
         if (worldToSunAngle.y > 0) {
-            val lightLinePerpendicular = Vector2(worldToSunAngle).scl(spawnLineLength)
+            val lightLinePerpendicular = Vector2(worldToSunAngle).scl(spawnLineLength*.5f)
             lightSpawnPosLineCenter.set(lightSpawnPosCenter)
             lightSpawnPosLineCenter.add(lightLinePerpendicular)
 
@@ -85,7 +88,7 @@ class Light(private val world: World) {
                 perpendicularOffset.set(lightPerpendicular)
                 perpendicularOffset.scl(spawnLineLength * (rand.nextFloat() - .5f))
                 val rayPos = Vector2(lightSpawnPosLineCenter).add(perpendicularOffset)
-                rays += Ray(rayPos, Vector2(worldToSunAngle).scl(-1f), MAX_STARTING_ENERGY * sin(dayLightRadians(world)).coerceAtLeast(0f).pow(1/2f), spawnLineLength * 2f, world)
+                rays += Ray(rayPos, Vector2(worldToSunAngle).scl(-1f), MAX_STARTING_ENERGY * sin(dayLightRadians(world)).coerceAtLeast(0f).pow(1/2f), spawnLineLength, world)
             }
         }
 
@@ -93,6 +96,9 @@ class Light(private val world: World) {
 
         // run rays
 //        rays.parallelStream().forEach {it.update()}
+        // run two iterations per frame
+        rays.forEach {it.update()}
+        rays.removeIf{it.queueRemoval}
         rays.forEach {it.update()}
         rays.removeIf{it.queueRemoval}
     }

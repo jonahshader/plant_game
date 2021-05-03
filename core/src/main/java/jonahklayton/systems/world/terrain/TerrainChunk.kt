@@ -39,6 +39,8 @@ class TerrainChunk(val xChunk: Int, val yChunk: Int, private val generator: Terr
 
     fun update(dt: Float) {
         cells.forEach { it?.update(dt) }
+        leaves.removeIf { it.isDead }
+        stems.removeIf { it.isDead }
     }
 
     private fun generate(terrain: Terrain) {

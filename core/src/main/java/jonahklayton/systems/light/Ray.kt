@@ -19,12 +19,28 @@ class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var trave
     init {
         lengthVector.scl(length)
         tipPos.add(pos).add(lengthVector)
+
+        moveToLoadedChunk()
     }
 
-    fun update() {
+    private fun move() {
         pos.add(lengthVector)
         tipPos.add(lengthVector)
         travelDistanceRemaining -= length
+    }
+
+    private fun moveToLoadedChunk() {
+        while (travelDistanceRemaining > 0 && !world.terrain.isInLoadedChunk(tipPos)) {
+            move()
+        }
+        if (travelDistanceRemaining <= 0) {
+            queueRemoval = true
+            return
+        }
+    }
+
+    fun update() {
+        move()
         if (travelDistanceRemaining <= 0) {
             queueRemoval = true
             return
