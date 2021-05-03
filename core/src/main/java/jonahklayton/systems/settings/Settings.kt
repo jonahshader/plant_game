@@ -22,5 +22,4 @@ object Settings {
     fun save(){
         settings.store(FileOutputStream("settings.properties"), "")
     }
-
 }
