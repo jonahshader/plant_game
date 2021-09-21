@@ -10,7 +10,7 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var travelDistanceRemaining: Float, private val world: World) {
     private val efficiency = .75f
     private val stemReduction = .3f
-    private val length = 4f
+    private val length = 8f
     private val startingEnergy = energy
     private val tipPos = Vector2()
     private val lengthVector = Vector2(angle)
@@ -21,6 +21,7 @@ class Ray(private val pos: Vector2, angle: Vector2, var energy: Float, var trave
         tipPos.add(pos).add(lengthVector)
 
         moveToLoadedChunk()
+//        while(!queueRemoval) update()
     }
 
     private fun move() {
