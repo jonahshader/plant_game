@@ -102,10 +102,15 @@ class EnemyPlant(xPosition: Float, energy: Float, world: World, difficulty: Int)
     fun makeRoot(){
         var lr = if(Random.nextBoolean()) 45F else -45F
 
+//        var trying = true
+//        while (trying) {
+//
+//        }
+
         roots.shuffle()
-        var parent = roots.get(0)
+        var parent = roots[0]
         if(parent == root){
-            parent = roots.get(1)
+            parent = roots[1]
         }
 
         var moveDist = 10
@@ -113,19 +118,24 @@ class EnemyPlant(xPosition: Float, energy: Float, world: World, difficulty: Int)
         var pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
             .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg() + lr)
             .scl(Random.nextFloat()*20+5f))
-        while(!world.terrain.isUnderground(pos)){
+        var tries = 0
+        while(!world.terrain.isUnderground(pos) && tries < 50){
             moveDist += 5
             pos = parent.worldPosition.cpy().add(Vector2(1f,1f).nor()
                 .setAngleDeg(Random.nextFloat()*moveDist-moveDist/2+parent.relativePosition.angleDeg() + lr)
                 .scl(Random.nextFloat()*20+20f))
+            tries++
+        }
+        if (tries < 50) {
+            pos.sub(parent.worldPosition)
+
+            var child = Root(pos, parent, this, 0F, world.terrain)
+
+            parent.addChild(child)
+            addRoot(child)
         }
 
-        pos.sub(parent.worldPosition)
 
-        var child = Root(pos, parent, this, 0F, world.terrain)
-
-        parent.addChild(child)
-        addRoot(child)
     }
 
 }

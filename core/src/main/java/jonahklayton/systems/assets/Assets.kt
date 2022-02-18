@@ -41,7 +41,6 @@ object Assets : Disposable {
     const val GAME_MUSIC = "audio/music/ingame.ogg"
     const val MENU_MUSIC = "audio/music/menu.ogg"
 
-
     // Sprites
     private const val SPRITES = "graphics/spritesheets/sprites.atlas"
 

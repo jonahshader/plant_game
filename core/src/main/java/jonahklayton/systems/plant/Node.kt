@@ -103,7 +103,7 @@ open class Node(relativeTargetPosition: Vector2, parent: Node?, var plant: Plant
         }
     }
 
-    fun grow(percent: Float){
+    open fun grow(percent: Float){
         var oldPos = Vector2(relativePosition.x, relativePosition.y)
 
         relativePosition = Vector2(relativePosition).add(Vector2(relativeTargetPosition).scl(percent/100))

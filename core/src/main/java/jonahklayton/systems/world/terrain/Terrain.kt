@@ -2,6 +2,8 @@ package jonahklayton.systems.world.terrain
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
+import jonahklayton.systems.plant.Leaf
+import jonahklayton.systems.plant.Stem
 import jonahklayton.systems.world.World
 
 class Terrain(private val world: World, private val generator: TerrainGenerator) {
@@ -14,7 +16,7 @@ class Terrain(private val world: World, private val generator: TerrainGenerator)
     private val tempCellsWithWater = mutableListOf<TerrainCell>()
     private val tempPos = Vector2()
     private val tempStep = Vector2()
-    private val keyToChunk = HashMap<String, TerrainChunk>()
+    val keyToChunk = HashMap<String, TerrainChunk>()
 
     // hopefully this returns null if there isn't a cell there. idk if the '?' operator works like that
     fun getCell(xCell: Int, yCell: Int) : TerrainCell? {
@@ -37,6 +39,34 @@ class Terrain(private val world: World, private val generator: TerrainGenerator)
         keyToChunk.values.forEach { it.update(dt) }
     }
 
+    fun addLeaf(leaf: Leaf) {
+        val xChunk = TerrainChunk.worldPosToChunkPos(leaf.worldPosition.x)
+        val yChunk = TerrainChunk.worldPosToChunkPos(leaf.worldPosition.y)
+        for (x in -1..1) for (y in -1..1)
+            keyToChunk[TerrainChunk.chunkPosToKey(xChunk + x, yChunk + y)]?.leaves?.plusAssign(leaf)
+    }
+    // call when leaf is growing
+    fun monitorLeaf(leaf: Leaf) {
+        keyToChunk.values.forEach {
+            it.leaves.remove(leaf)
+        }
+        addLeaf(leaf)
+    }
+
+    fun addStem(stem: Stem) {
+        val xChunk = TerrainChunk.worldPosToChunkPos(stem.worldPosition.x)
+        val yChunk = TerrainChunk.worldPosToChunkPos(stem.worldPosition.y)
+        for (x in -1..1) for (y in -1..1)
+            keyToChunk[TerrainChunk.chunkPosToKey(xChunk + x, yChunk + y)]?.stems?.plusAssign(stem)
+    }
+
+    fun monitorStem(stem: Stem) {
+        keyToChunk.values.forEach {
+            it.stems.remove(stem)
+        }
+        addStem(stem)
+    }
+
     fun loadUnloadChunks() {
         // iterate through all nodes. keep chunks with nodes loaded
         keyToChunk.values.forEach { it.queueRemoved = true }
@@ -49,7 +79,7 @@ class Terrain(private val world: World, private val generator: TerrainGenerator)
                     // try load or keep loaded
                     val key = TerrainChunk.chunkPosToKey(x, y)
                     if (!keyToChunk.containsKey(key)) {
-                        keyToChunk[key] = TerrainChunk(x, y, generator, this)
+                        keyToChunk[key] = TerrainChunk(x, y, generator, world)
                     } else {
                         keyToChunk[key]!!.queueRemoved = false
                     }
